@@ -1,10 +1,16 @@
+/* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import type { NextPage } from 'next'
-import {useEffect} from "react";
+import Link from "next/link";
+
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../lib/$path";
 
 const Home: NextPage = () => {
 
   return (
-    <div>トップページです</div>
+    <Link href={pagesPath.users.$url()}>
+      <a style={{color: "blue", textDecoration: "underline"}}>ユーザー一覧</a>
+    </Link>
   )
 }
 

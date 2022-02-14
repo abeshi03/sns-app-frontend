@@ -1,0 +1,51 @@
+.userCard {
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+
+.gridContainer {
+
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  column-gap: 10px;
+}
+
+
+.userImage {
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  background-position: center;
+  background-size: cover;
+}
+
+
+.userName {
+
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+.email {
+
+  font-size: 14px;
+
+  margin-top: 10px;
+}
+
+
+.description {
+
+  font-size: 14px;
+
+  margin-top: 10px;
+}

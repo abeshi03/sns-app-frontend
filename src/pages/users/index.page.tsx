@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import {useEffect, useState, VFC} from "react";
+import { useCallback, useState, VFC } from "react";
 import useSWR from 'swr'
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -18,7 +18,7 @@ import { Endpoint } from "../../constants/endpoints";
 import { Pagination } from "../../components/molecules/Pagination/Pagination";
 import { UserCard } from "../../components/organisms/Card/UserCard/UserCard";
 import { SearchInputField } from "../../components/atoms/SearchInputField/SearchInputField";
-import {set} from "react-hook-form";
+import { NoSearchGroup } from "../../components/molecules/NoSearchGroup/NoSearchGroup";
 
 
 const UsersListPage: VFC = () => {
@@ -29,6 +29,7 @@ const UsersListPage: VFC = () => {
   const PER_PAGE_NUMBER: number = 10;
 
 
+  /* ユーザー一覧取得 --------------------------------------------------------------------------------------------------- */
   const { data, error } = useSWR<UsersResponseType>(
     Endpoint.getUsers({
       paginationPageNumber,
@@ -37,9 +38,13 @@ const UsersListPage: VFC = () => {
     }),
     getUsersFetcher
   )
-
   const isLoading = !data && !error;
+  const isError = error;
+  const isNoUsers = data && data.totalItemsCount === 0;
+  const isNoSearchResults = data && data.itemsCountInSelection === 0;
 
+
+  /* 見出し ----------------------------------------------------------------------------------------------------------- */
   const heading = (): string => {
     if (searchWard === "") {
       return "ユーザー一覧";
@@ -47,6 +52,13 @@ const UsersListPage: VFC = () => {
 
     return `"${searchWard}"の検索結果一覧`
   }
+
+
+  /* 検索条件リセット --------------------------------------------------------------------------------------------------- */
+  const resetFiltering = useCallback((): void => {
+    setPaginationPageNumber(1);
+    setSearchWard("")
+  }, [])
 
 
   const usersData = (): JSX.Element | null => {
@@ -59,16 +71,16 @@ const UsersListPage: VFC = () => {
       )
     }
 
-    if (error) {
+    if (isError) {
       return <p>エラーです</p>
     }
 
-    if (data && data.totalItemsCount === 0) {
+    if (isNoUsers) {
       return <p>ユーザーはいません</p>
     }
 
-    if (data && data.itemsCountInSelection === 0) {
-      return <p>検索結果なし</p>
+    if (isNoSearchResults) {
+      return <NoSearchGroup resetFunction={resetFiltering}/>
     }
 
     if (data) {

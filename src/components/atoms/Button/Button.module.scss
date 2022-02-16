@@ -1,0 +1,95 @@
+@import "styles/global/mixins";
+
+// - ボタン色 ============================================================================================================
+.button__skyBlue {
+
+  background: #1e9bef;
+  color: #FFFFFF;
+
+  border: none;
+
+
+  &:hover {
+
+    background: #FFFFFF;
+    color: #1e9bef;
+
+    border: 2px solid #1e9bef;
+
+    box-shadow: 0 3px 6px rgba(black, 0.25);
+  }
+
+
+  &:focus {
+
+    background: #1e9bef;
+    color: #FFFFFF;
+  }
+
+
+  &:active {
+
+    background: #FFFFFF;
+    color: #1e9bef;
+
+    border: 2px solid #1e9bef;
+  }
+}
+
+
+.button__white {
+
+  background: #FFFFFF;
+  color: #1e9bef;
+
+  border: 2px solid #1e9bef;
+
+
+  &:hover {
+
+    background: #1e9bef;
+    color: #FFFFFF;
+
+    border: 2px solid #1e9bef;
+
+    box-shadow: 0 3px 6px rgba(black, 0.25);
+  }
+
+
+  &:focus {
+
+    background: #FFFFFF;
+    color: #1e9bef;
+  }
+
+
+  &:active {
+
+    background: #1e9bef;
+    color: #FFFFFF;
+  }
+}
+
+// - 大きさ =============================================================================================================
+.big {
+
+  width: 168px;
+  height: 50px;
+}
+
+.small {
+
+  width: 109px;
+  height: 45px;
+}
+
+
+.button {
+
+  border-radius: 5px;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+}

@@ -80,7 +80,7 @@ const UsersListPage: VFC = () => {
     }
 
     if (isNoSearchResults) {
-      return <NoSearchGroup resetFunction={resetFiltering}/>
+      return <NoSearchGroup className={styles.noSearchGroup} resetFunction={resetFiltering}/>
     }
 
     if (data) {

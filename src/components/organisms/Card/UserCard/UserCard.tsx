@@ -3,6 +3,7 @@ import React, { memo, VFC } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserCard.module.scss";
+import noImage from "../../../../../public/images/user-profile.png";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { User } from "../../../../type/User";
@@ -26,7 +27,7 @@ export const UserCard: VFC<Props> = memo((props) => {
         <div
           className={styles.userImage}
           role="img"
-          style={{backgroundImage: `url(${targetUser.avatarUri ?? ""})`}}
+          style={{backgroundImage: `url(${targetUser.avatarUri ?? noImage.src})`}}
         ></div>
         <div className={styles.userName}>{ targetUser.name }</div>
       </div>

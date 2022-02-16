@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import { useState, VFC } from "react";
+import {useEffect, useState, VFC} from "react";
 import useSWR from 'swr'
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -18,6 +18,7 @@ import { Endpoint } from "../../constants/endpoints";
 import { Pagination } from "../../components/molecules/Pagination/Pagination";
 import { UserCard } from "../../components/organisms/Card/UserCard/UserCard";
 import { SearchInputField } from "../../components/atoms/SearchInputField/SearchInputField";
+import {set} from "react-hook-form";
 
 
 const UsersListPage: VFC = () => {
@@ -25,7 +26,7 @@ const UsersListPage: VFC = () => {
 
   const [ paginationPageNumber, setPaginationPageNumber ] = useState(1);
   const [ searchWard, setSearchWard ] = useState<string>("");
-  const PER_PAGE_NUMBER: number = 15;
+  const PER_PAGE_NUMBER: number = 10;
 
 
   const { data, error } = useSWR<UsersResponseType>(
@@ -75,12 +76,12 @@ const UsersListPage: VFC = () => {
         <>
           <div className={styles.userCardsFlow}>
             {data.users.map((user) => (
-              <UserCard targetUser={user}/>
+              <UserCard key={user.id} targetUser={user}/>
             ))}
           </div>
           <Pagination
             className={styles.pagination}
-            totalCount={data.totalItemsCount}
+            totalCount={data.itemsCountInSelection}
             currentPageNumber={paginationPageNumber}
             perPageNumber={PER_PAGE_NUMBER}
             setStatePageNumber={setPaginationPageNumber}
@@ -95,13 +96,14 @@ const UsersListPage: VFC = () => {
 
 
   return (
-    <>
-      <div className={styles.usersListPage}>
-        <SearchInputField setStateSearchWard={setSearchWard}/>
-        <h1 className={styles.heading}>{ heading() }</h1>
-        {usersData()}
-      </div>
-    </>
+    <div className={styles.usersListPage}>
+      <SearchInputField
+        setStateSearchWard={setSearchWard}
+        setStatePageNumber={setPaginationPageNumber}
+      />
+      <h1 className={styles.heading}>{ heading() }</h1>
+      {usersData()}
+    </div>
   )
 }
 

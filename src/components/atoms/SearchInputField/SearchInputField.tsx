@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 type Props = {
   setStateSearchWard: Dispatch<SetStateAction<string>>;
+  setStatePageNumber?: Dispatch<SetStateAction<number>>;
 }
 
 
@@ -18,10 +19,17 @@ type Input = {
 /* eslint-disable-next-line react/display-name */
 export const SearchInputField: VFC<Props> = memo((props) => {
 
-  const { setStateSearchWard } = props;
+  const { setStateSearchWard, setStatePageNumber } = props;
 
   const { register, handleSubmit } = useForm<Input>();
-  const onSearch: SubmitHandler<Input> = data => setStateSearchWard(data.searchWard);
+  const onSearch: SubmitHandler<Input> = data => {
+
+    if (setStatePageNumber) {
+      setStatePageNumber(1);
+    }
+
+    setStateSearchWard(data.searchWard);
+  }
 
   return (
     <>

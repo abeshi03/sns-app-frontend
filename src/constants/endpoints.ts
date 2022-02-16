@@ -16,11 +16,13 @@ export namespace Endpoint {
       return `${BASE_URL}/users?` +
         `paginationPageNumber=${query.paginationPageNumber}` +
         `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}`
-    }
+    } else {
 
-    return `${BASE_URL}/users?` +
+      return `${BASE_URL}/users?` +
       `paginationPageNumber=${query.paginationPageNumber}` +
       `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}` +
       `&searchByUserName=${query.searchByUserName}`
+    }
+
   }
 }

@@ -57,7 +57,7 @@ const UsersListPage: VFC = () => {
   const resetFiltering = useCallback((): void => {
     setPaginationPageNumber(1);
     setSearchWard("");
-  }, []);
+  }, [ paginationPageNumber, searchWard ]);
 
 
   /* --- 補助 -------------------------------------------------------------------------------------------------------- */

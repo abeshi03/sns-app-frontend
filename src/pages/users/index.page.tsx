@@ -24,43 +24,52 @@ import { NoSearchGroup } from "../../components/molecules/NoSearchGroup/NoSearch
 const UsersListPage: VFC = () => {
 
 
+  /* --- state ------------------------------------------------------------------------------------------------------- */
   const [ paginationPageNumber, setPaginationPageNumber ] = useState(1);
   const [ searchWard, setSearchWard ] = useState<string>("");
-  const PER_PAGE_NUMBER: number = 10;
+  const PER_PAGE_NUMBER: number = 15;
 
 
-  /* ユーザー一覧取得 --------------------------------------------------------------------------------------------------- */
-  const { data, error } = useSWR<UsersResponseType>(
-    Endpoint.getUsers({
+  /* --- ユーザー一覧取得 ----------------------------------------------------------------------------------------------- */
+  const { data, error } = useSWR<UsersResponseType>(Endpoint.getUsers({
       paginationPageNumber,
       itemsCountPerPaginationPage: PER_PAGE_NUMBER,
       searchByUserName: searchWard
-    }),
-    getUsersFetcher
-  )
+    }), getUsersFetcher);
+
   const isLoading = !data && !error;
   const isError = error;
   const isNoUsers = data && data.totalItemsCount === 0;
   const isNoSearchResults = data && data.itemsCountInSelection === 0;
 
 
-  /* 見出し ----------------------------------------------------------------------------------------------------------- */
+  /* --- 見出し ------------------------------------------------------------------------------------------------------- */
   const heading = (): string => {
     if (searchWard === "") {
       return "ユーザー一覧";
     }
 
-    return `"${searchWard}"の検索結果一覧`
+    return `"${searchWard}"の検索結果一覧`;
   }
 
 
-  /* 検索条件リセット --------------------------------------------------------------------------------------------------- */
+  /* --- 検索条件リセット ----------------------------------------------------------------------------------------------- */
   const resetFiltering = useCallback((): void => {
     setPaginationPageNumber(1);
-    setSearchWard("")
-  }, [])
+    setSearchWard("");
+  }, []);
 
 
+  /* --- 補助 -------------------------------------------------------------------------------------------------------- */
+  const returnTop = (): void => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+
+  /* --- ユーザー情報表示 ----------------------------------------------------------------------------------------------- */
   const usersData = (): JSX.Element | null => {
 
     if (isLoading) {
@@ -97,16 +106,17 @@ const UsersListPage: VFC = () => {
             currentPageNumber={paginationPageNumber}
             perPageNumber={PER_PAGE_NUMBER}
             setStatePageNumber={setPaginationPageNumber}
+            onClickFunction={returnTop}
           />
         </>
       )
     }
 
     return null;
-
   }
 
 
+  /* --- view -------------------------------------------------------------------------------------------------------- */
   return (
     <div className={styles.usersListPage}>
       <SearchInputField
@@ -114,7 +124,7 @@ const UsersListPage: VFC = () => {
         setStatePageNumber={setPaginationPageNumber}
       />
       <h1 className={styles.heading}>{ heading() }</h1>
-      {usersData()}
+      { usersData() }
     </div>
   )
 }

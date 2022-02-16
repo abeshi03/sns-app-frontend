@@ -11,12 +11,13 @@ type Props = {
   perPageNumber: number;
   setStatePageNumber:  Dispatch<SetStateAction<number>>
   className?: string;
+  onClickFunction?: () => void;
 }
 
 /* eslint-disable-next-line react/display-name */
 export const Pagination: VFC<Props> = memo((props) => {
 
-  const { totalCount, currentPageNumber, perPageNumber, setStatePageNumber, className } = props;
+  const { totalCount, currentPageNumber, perPageNumber, setStatePageNumber, className, onClickFunction } = props;
 
   const NUMBERED_BUTTONS_COUNT__MUST_BE_ODD: number = 2;
   const totalPageCount = Math.ceil(totalCount / perPageNumber);
@@ -33,17 +34,27 @@ export const Pagination: VFC<Props> = memo((props) => {
     return Math.ceil(totalCount / perPageNumber);
   }
 
+  const onChangePageNumber = (newPageNumber: number): void => {
+
+    if (onClickFunction) {
+      onClickFunction();
+      return setStatePageNumber(newPageNumber);
+    }
+
+    return setStatePageNumber(newPageNumber);
+  }
+
   return (
     <>
       { totalPageCount > 1 &&
-        <nav className={`${styles.pagination} ${className}`} >
+        <nav className={`${styles.pagination} ${className}`}>
 
           { mustDisplayGoToFirstPageButton() &&
             <span
               className={styles.toFirstPageButton}
               role="button"
               aria-label="最初のページへ戻る"
-              onClick={() => setStatePageNumber(1)}
+              onClick={() => onChangePageNumber(1)}
             >{ "<< 最初" }</span>
           }
 
@@ -52,7 +63,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               className={styles.toPreviousPageButton}
               role="button"
               aria-label="一つ前のページへ戻る"
-              onClick={() => setStatePageNumber(prevState => prevState - 1)}
+              onClick={() => onChangePageNumber(currentPageNumber - 1)}
             >{ "< 前" }</span>
           }
 
@@ -60,7 +71,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => setStatePageNumber(currentPageNumber - 2)}
+              onClick={() => onChangePageNumber(currentPageNumber - 2)}
             >{ currentPageNumber - 2 }</span>
           }
 
@@ -68,7 +79,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => setStatePageNumber(currentPageNumber - 1)}
+              onClick={() => onChangePageNumber(currentPageNumber - 1)}
             >{ currentPageNumber - 1 }</span>
           }
 
@@ -78,7 +89,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => setStatePageNumber(currentPageNumber + 1)}
+              onClick={() => onChangePageNumber(currentPageNumber + 1)}
             >{ currentPageNumber + 1 }</span>
           }
 
@@ -86,7 +97,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => setStatePageNumber(currentPageNumber + 2)}
+              onClick={() => onChangePageNumber(currentPageNumber + 2)}
             >{ currentPageNumber + 2 }</span>
           }
 
@@ -95,7 +106,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               role="button"
               aria-label="次のページへ"
               className={styles.toNextPageButton}
-              onClick={() => setStatePageNumber(prevState => prevState + 1)}
+              onClick={() => onChangePageNumber(currentPageNumber + 1)}
             >{ "> 次" }</span>
           }
 
@@ -104,7 +115,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               role="button"
               aria-label="最後のページへ"
               className={styles.toLastPageButton}
-              onClick={() => setStatePageNumber(totalPagesCount)}
+              onClick={() => onChangePageNumber(totalPagesCount())}
             >{ ">> 最後" }</span>
           }
 

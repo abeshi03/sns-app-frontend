@@ -20,6 +20,9 @@ import { UserCard } from "../../components/organisms/Card/UserCard/UserCard";
 import { SearchInputField } from "../../components/atoms/SearchInputField/SearchInputField";
 import { NoSearchGroup } from "../../components/molecules/NoSearchGroup/NoSearchGroup";
 
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { scrollTop } from "../../utility/scrollTop";
+
 
 const UsersListPage: VFC = () => {
 
@@ -60,13 +63,11 @@ const UsersListPage: VFC = () => {
   }, [ paginationPageNumber, searchWard ]);
 
 
-  /* --- 補助 -------------------------------------------------------------------------------------------------------- */
-  const returnTop = (): void => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  /* --- ページネーション ----------------------------------------------------------------------------------------------- */
+  const onChangePage = useCallback((pageNumber: number): void => {
+    scrollTop();
+    setPaginationPageNumber(pageNumber);
+  }, [])
 
 
   /* --- ユーザー情報表示 ----------------------------------------------------------------------------------------------- */
@@ -105,8 +106,7 @@ const UsersListPage: VFC = () => {
             totalCount={data.itemsCountInSelection}
             currentPageNumber={paginationPageNumber}
             perPageNumber={PER_PAGE_NUMBER}
-            setStatePageNumber={setPaginationPageNumber}
-            onClickFunction={returnTop}
+            onChangePage={onChangePage}
           />
         </>
       )

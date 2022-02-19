@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, { Dispatch, memo, SetStateAction, VFC } from "react";
+import React, { memo, VFC } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./Pagination.module.scss";
@@ -9,15 +9,14 @@ type Props = {
   totalCount: number;
   currentPageNumber: number;
   perPageNumber: number;
-  setStatePageNumber:  Dispatch<SetStateAction<number>>
+  onChangePage: (pageNumber: number) => void;
   className?: string;
-  onClickFunction?: () => void;
 }
 
 /* eslint-disable-next-line react/display-name */
 export const Pagination: VFC<Props> = memo((props) => {
 
-  const { totalCount, currentPageNumber, perPageNumber, setStatePageNumber, className, onClickFunction } = props;
+  const { totalCount, currentPageNumber, perPageNumber, onChangePage, className } = props;
 
   const NUMBERED_BUTTONS_COUNT__MUST_BE_ODD: number = 2;
   const totalPageCount = Math.ceil(totalCount / perPageNumber);
@@ -34,15 +33,6 @@ export const Pagination: VFC<Props> = memo((props) => {
     return Math.ceil(totalCount / perPageNumber);
   }
 
-  const onChangePageNumber = (newPageNumber: number): void => {
-
-    if (onClickFunction) {
-      onClickFunction();
-      return setStatePageNumber(newPageNumber);
-    }
-
-    return setStatePageNumber(newPageNumber);
-  }
 
   return (
     <>
@@ -54,7 +44,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               className={styles.toFirstPageButton}
               role="button"
               aria-label="最初のページへ戻る"
-              onClick={() => onChangePageNumber(1)}
+              onClick={() => onChangePage(1)}
             >{ "<< 最初" }</span>
           }
 
@@ -63,7 +53,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               className={styles.toPreviousPageButton}
               role="button"
               aria-label="一つ前のページへ戻る"
-              onClick={() => onChangePageNumber(currentPageNumber - 1)}
+              onClick={() => onChangePage(currentPageNumber - 1)}
             >{ "< 前" }</span>
           }
 
@@ -71,7 +61,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => onChangePageNumber(currentPageNumber - 2)}
+              onClick={() => onChangePage(currentPageNumber - 2)}
             >{ currentPageNumber - 2 }</span>
           }
 
@@ -79,7 +69,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => onChangePageNumber(currentPageNumber - 1)}
+              onClick={() => onChangePage(currentPageNumber - 1)}
             >{ currentPageNumber - 1 }</span>
           }
 
@@ -89,7 +79,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => onChangePageNumber(currentPageNumber + 1)}
+              onClick={() => onChangePage(currentPageNumber + 1)}
             >{ currentPageNumber + 1 }</span>
           }
 
@@ -97,7 +87,7 @@ export const Pagination: VFC<Props> = memo((props) => {
             <span
               role="button"
               className={styles.PageNumberButton}
-              onClick={() => onChangePageNumber(currentPageNumber + 2)}
+              onClick={() => onChangePage(currentPageNumber + 2)}
             >{ currentPageNumber + 2 }</span>
           }
 
@@ -106,7 +96,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               role="button"
               aria-label="次のページへ"
               className={styles.toNextPageButton}
-              onClick={() => onChangePageNumber(currentPageNumber + 1)}
+              onClick={() => onChangePage(currentPageNumber + 1)}
             >{ "> 次" }</span>
           }
 
@@ -115,7 +105,7 @@ export const Pagination: VFC<Props> = memo((props) => {
               role="button"
               aria-label="最後のページへ"
               className={styles.toLastPageButton}
-              onClick={() => onChangePageNumber(totalPagesCount())}
+              onClick={() => onChangePage(totalPagesCount())}
             >{ ">> 最後" }</span>
           }
 

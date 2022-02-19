@@ -2,7 +2,7 @@ export const BASE_URL = "http://localhost:5000";
 
 export namespace Endpoint {
 
-  /* --- ユーザー一覧取得エンドポイント ----------------------------------------------------------------------------------- */
+  /* --- ユーザー一覧取得 ----------------------------------------------------------------------------------------------- */
   export function getUsers(
     query: {
       paginationPageNumber: number;
@@ -27,7 +27,14 @@ export namespace Endpoint {
   }
 
 
+  /* --- ユーザー取得 -------------------------------------------------------------------------------------------------- */
   export function getUser(pathParameter: { userId: number; }): string {
     return `${BASE_URL}/users/${pathParameter.userId}`
+  }
+
+
+  /* --- ユーザー更新 -------------------------------------------------------------------------------------------------- */
+  export function updateUser(pathParameter: { userId: number; }): string {
+    return `${BASE_URL}/users/${pathParameter.userId}`;
   }
 }

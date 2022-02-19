@@ -32,6 +32,8 @@ export namespace Endpoint {
     return `${BASE_URL}/users/${pathParameter.userId}`
   }
 
+  /* --- ユーザー更新 -------------------------------------------------------------------------------------------------- */
+  export const addUser = `${BASE_URL}/users`;
 
   /* --- ユーザー更新 -------------------------------------------------------------------------------------------------- */
   export function updateUser(pathParameter: { userId: number; }): string {

@@ -8,6 +8,9 @@ export const pagesPath = {
       },
       $url: (url?: { hash?: string }) => ({ pathname: '/users/[userId]' as const, query: { userId }, hash: url?.hash })
     }),
+    add: {
+      $url: (url?: { hash?: string }) => ({ pathname: '/users/add' as const, hash: url?.hash })
+    },
     $url: (url?: { hash?: string }) => ({ pathname: '/users' as const, hash: url?.hash })
   },
   $url: (url?: { hash?: string }) => ({ pathname: '/' as const, hash: url?.hash })

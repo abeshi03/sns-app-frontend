@@ -1,81 +1,67 @@
-/* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
+/* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { VFC } from "react";
-import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
-import styles from "./userEditPage.module.scss";
-
-/* --- カスタムフック -------------------------------------------------------------------------------------------------- */
-import { useUser } from "../../../../hooks/useUser";
-
-/* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
-import { InputField } from "../../../../components/molecules/controls/InputField/InputField";
-
-/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
-import { pagesPath } from "../../../../lib/$path";
+import styles from "./UserAddPage.module.scss";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
-import { UserInputValues } from "../../../../type/User";
+import { UserInputValues } from "../../../type/User";
+
+/* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
+import { InputField } from "../../../components/molecules/controls/InputField/InputField";
 
 /* --- api ----------------------------------------------------------------------------------------------------------- */
-import { updateUser } from "../../../../apis/UsersApi";
+import { addUser } from "../../../apis/UsersApi";
 
-/* --- バリデーション --------------------------------------------------------------------------------------------------- */
+/* --- バリデーション -------------------------------------------------------------------------------------------------- */
 import {
-  userNameErrorMessages,
-  userDescriptionErrorMessage,
+  userValidations,
   emailErrorMessage,
-  userValidations
-} from "../../../../config/validations/userValidations";
+  userDescriptionErrorMessage,
+  userNameErrorMessages
+} from "../../../config/validations/userValidations";
+import {pagesPath} from "../../../lib/$path";
 
 
+const UserAddPage: VFC = () => {
 
-const userEditPage: VFC = () => {
-
-  const { user, userLoading, userError } = useUser();
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
   const router = useRouter();
 
-  const update: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
+  const add: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
 
     try {
 
-      if (!user) {
-        console.log("ユーザーいない、、、")
-        return;
-      }
-
-      await updateUser({
-        id: user.id,
+      const userId = await addUser({
         name: inputValue.name,
         email: inputValue.email,
         description: inputValue.description,
         avatarUri: null
       });
 
-      await router.replace(pagesPath.users._userId(user.id).$url());
-      console.log("更新しました");
+      console.log(userId);
+
+      await router.replace(pagesPath.users._userId(userId).$url());
+      console.log("ユーザーを追加しました");
 
     } catch (error: unknown) {
 
-      console.log(error, "ユーザー更新に失敗しました。");
+      console.log(error, "ユーザーの追加に失敗しました")
     }
   }
 
+
   return (
-    <div className={styles.userEditPage}>
-      <h1>ユーザー編集</h1>
-      { userLoading && <p>ローディング中</p> }
-      { userError && <p>エラー</p> }
-      { user &&
-      <form className={styles.userControlGroup} onSubmit={handleSubmit(update)}>
+    <div className={styles.userAddPage}>
+      <h1>ユーザー追加</h1>
+      <form className={styles.userAddingForm} onSubmit={handleSubmit(add)}>
         <InputField
           className={styles.inputField}
           type="text"
           label="ユーザー名"
           placeholder="ユーザー名を入力してください"
-          defaultValue={user.name}
           required={userValidations.name.required}
           inputProps={register("name", {
             required: userValidations.name.required,
@@ -90,7 +76,6 @@ const userEditPage: VFC = () => {
           type="email"
           label="メールアドレス"
           placeholder="メールアドレスを入力してください"
-          defaultValue={user.email}
           required={userValidations.email.required}
           inputProps={register("email", {
             required: userValidations.email.required,
@@ -104,7 +89,6 @@ const userEditPage: VFC = () => {
           type="text"
           label="説明文"
           placeholder="説明文を入力してください"
-          defaultValue={user.description}
           required={userValidations.description.required}
           inputProps={register("description", {
             required: userValidations.description.required,
@@ -114,11 +98,11 @@ const userEditPage: VFC = () => {
         />
 
         { errors.description && userDescriptionErrorMessage(errors.description) }
-        <button type="submit">更新する</button>
+        <button type="submit">ユーザー追加</button>
       </form>
-      }
     </div>
   )
 }
 
-export default userEditPage;
+
+export default UserAddPage;

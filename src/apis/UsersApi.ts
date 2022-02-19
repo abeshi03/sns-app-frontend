@@ -60,5 +60,25 @@ export async function updateUser(updateUserData: User): Promise<void> {
     console.log(error);
     throw new Error("API ERROR: updateUser");
   }
+}
 
+
+export async function addUser(addUserData: Omit<User, "id">): Promise<number> {
+
+  try {
+
+    const response = await axios.post(Endpoint.addUser, {
+      name: addUserData.name,
+      email: addUserData.email,
+      description: addUserData.description,
+      avatarUri: addUserData.avatarUri
+    });
+
+    return (response.data).data.id;
+
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw new Error("API ERROR: addUser");
+  }
 }

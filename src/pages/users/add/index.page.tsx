@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserAddPage.module.scss";
 
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../../../lib/$path";
+
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { UserInputValues } from "../../../type/User";
 
@@ -22,13 +25,13 @@ import {
   userDescriptionErrorMessage,
   userNameErrorMessages
 } from "../../../config/validations/userValidations";
-import {pagesPath} from "../../../lib/$path";
 
 
 const UserAddPage: VFC = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
   const router = useRouter();
+
 
   const add: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
 

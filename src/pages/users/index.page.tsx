@@ -56,18 +56,23 @@ const UsersListPage: VFC = () => {
   }
 
 
-  /* --- 検索条件リセット ----------------------------------------------------------------------------------------------- */
+  /* --- 検索関連 ----------------------------------------------------------------------------------------------------- */
+  const onSearchUserName = useCallback((searchWard: string): void => {
+    setPaginationPageNumber(1);
+    setSearchWard(searchWard);
+  }, []);
+
   const resetFiltering = useCallback((): void => {
     setPaginationPageNumber(1);
     setSearchWard("");
-  }, [ paginationPageNumber, searchWard ]);
+  }, []);
 
 
   /* --- ページネーション ----------------------------------------------------------------------------------------------- */
   const onChangePage = useCallback((pageNumber: number): void => {
     scrollTop();
     setPaginationPageNumber(pageNumber);
-  }, [])
+  }, []);
 
 
   /* --- ユーザー情報表示 ----------------------------------------------------------------------------------------------- */
@@ -120,8 +125,7 @@ const UsersListPage: VFC = () => {
   return (
     <div className={styles.usersListPage}>
       <SearchInputField
-        setStateSearchWard={setSearchWard}
-        setStatePageNumber={setPaginationPageNumber}
+        onSearchFunction={onSearchUserName}
       />
       <h1 className={styles.heading}>{ heading() }</h1>
       { usersData() }

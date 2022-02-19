@@ -1,12 +1,11 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, { Dispatch, memo, SetStateAction, VFC } from "react";
+import React, { memo, VFC } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 
 type Props = {
-  setStateSearchWard: Dispatch<SetStateAction<string>>;
-  setStatePageNumber?: Dispatch<SetStateAction<number>>;
+  onSearchFunction: (searchWard: string) => void;
 }
 
 
@@ -19,16 +18,11 @@ type Input = {
 /* eslint-disable-next-line react/display-name */
 export const SearchInputField: VFC<Props> = memo((props) => {
 
-  const { setStateSearchWard, setStatePageNumber } = props;
+  const { onSearchFunction } = props;
 
   const { register, handleSubmit } = useForm<Input>();
   const onSearch: SubmitHandler<Input> = data => {
-
-    if (setStatePageNumber) {
-      setStatePageNumber(1);
-    }
-
-    setStateSearchWard(data.searchWard);
+    onSearchFunction(data.searchWard);
   }
 
   return (

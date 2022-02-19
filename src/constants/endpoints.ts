@@ -25,4 +25,9 @@ export namespace Endpoint {
     }
 
   }
+
+
+  export function getUser(pathParameter: { userId: number; }): string {
+    return `/users/${pathParameter.userId}`
+  }
 }

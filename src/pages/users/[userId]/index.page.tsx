@@ -7,6 +7,12 @@ import styles from "./userDetailsPage.module.scss";
 /* --- カスタムフック -------------------------------------------------------------------------------------------------- */
 import { useUser } from "../../../hooks/useUser";
 
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../../../lib/$path";
+
+/* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
+import { Button } from "../../../components/atoms/Button/Button";
+
 
 const userDetailsPage = () => {
 
@@ -22,9 +28,15 @@ const userDetailsPage = () => {
           <p>{user.id}</p>
           <p>{user.name}</p>
           <p>{user.description}</p>
+          <Button
+            color={"SKY_BLUE"}
+            size={"BIG"}
+            path={pagesPath.users._userId(user.id).edit.$url()}>
+            ユーザー編集
+          </Button>
         </>
-
       }
+
     </div>
   )
 }

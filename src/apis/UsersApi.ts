@@ -3,6 +3,7 @@ import axios from "axios";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { ApiResponse } from "../type/response/ApiResponse";
+import { User } from "../type/User";
 import { UsersResponseType } from "../type/response/UsersResponse";
 
 
@@ -21,3 +22,18 @@ export async function getUsersFetcher(endPoint: string): Promise<UsersResponseTy
   }
 }
 
+
+export async function getUserFetcher(endPoint: string): Promise<User> {
+
+  try {
+
+    const response: ApiResponse<User> = await axios.get(endPoint)
+
+    return (response.data).data;
+
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw new Error("API ERROR: getUser");
+  }
+}

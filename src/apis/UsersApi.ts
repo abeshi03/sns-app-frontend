@@ -6,6 +6,9 @@ import { ApiResponse } from "../type/response/ApiResponse";
 import { User } from "../type/User";
 import { UsersResponseType } from "../type/response/UsersResponse";
 
+/* --- エンドポイント --------------------------------------------------------------------------------------------------- */
+import { Endpoint } from "../constants/endpoints";
+
 
 export async function getUsersFetcher(endPoint: string): Promise<UsersResponseType> {
 
@@ -36,4 +39,26 @@ export async function getUserFetcher(endPoint: string): Promise<User> {
     console.log(error);
     throw new Error("API ERROR: getUser");
   }
+}
+
+
+export async function updateUser(updateUserData: User): Promise<void> {
+
+  try {
+
+    await axios.patch<User>(Endpoint.updateUser({
+      userId: updateUserData.id
+    }), {
+      name: updateUserData.name,
+      email: updateUserData.email,
+      description: updateUserData.description,
+      avatarUri: updateUserData.avatarUri
+    });
+
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw new Error("API ERROR: updateUser");
+  }
+
 }

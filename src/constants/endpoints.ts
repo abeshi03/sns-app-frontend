@@ -32,11 +32,16 @@ export namespace Endpoint {
     return `${BASE_URL}/users/${pathParameter.userId}`
   }
 
-  /* --- ユーザー更新 -------------------------------------------------------------------------------------------------- */
+  /* --- ユーザー追加 -------------------------------------------------------------------------------------------------- */
   export const addUser = `${BASE_URL}/users`;
 
   /* --- ユーザー更新 -------------------------------------------------------------------------------------------------- */
   export function updateUser(pathParameter: { userId: number; }): string {
+    return `${BASE_URL}/users/${pathParameter.userId}`;
+  }
+
+  /* --- ユーザー削除 -------------------------------------------------------------------------------------------------- */
+  export function deleteUser(pathParameter: { userId: number; }): string {
     return `${BASE_URL}/users/${pathParameter.userId}`;
   }
 }

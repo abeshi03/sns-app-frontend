@@ -82,3 +82,17 @@ export async function addUser(addUserData: Omit<User, "id">): Promise<number> {
     throw new Error("API ERROR: addUser");
   }
 }
+
+
+export async function deleteUser(targetUserId: number): Promise<void> {
+
+  try {
+
+    await axios.delete(Endpoint.deleteUser({ userId: targetUserId }));
+
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw new Error("API ERROR: deleteUser");
+  }
+}

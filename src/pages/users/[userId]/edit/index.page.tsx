@@ -11,6 +11,7 @@ import { useUser } from "../../../../hooks/useUser";
 
 /* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
 import { InputField } from "../../../../components/molecules/controls/InputField/InputField";
+import { Button } from "../../../../components/atoms/Button/Button";
 
 /* --- ルーティング ---------------------------------------------------------------------------------------------------- */
 import { pagesPath } from "../../../../lib/$path";
@@ -19,7 +20,7 @@ import { pagesPath } from "../../../../lib/$path";
 import { UserInputValues } from "../../../../type/User";
 
 /* --- api ----------------------------------------------------------------------------------------------------------- */
-import { updateUser } from "../../../../apis/UsersApi";
+import { deleteUser, updateUser } from "../../../../apis/UsersApi";
 
 /* --- バリデーション --------------------------------------------------------------------------------------------------- */
 import {
@@ -36,6 +37,23 @@ const userEditPage: VFC = () => {
   const { user, userLoading, userError } = useUser();
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
   const router = useRouter();
+
+
+  const deleteUserData = async (): Promise<void> => {
+
+    try {
+
+      if (!user) return;
+      confirm("本当に削除しますか？");
+      await deleteUser(user.id);
+
+      await router.replace(pagesPath.users.$url());
+
+    } catch (error: unknown) {
+
+      console.log(error, "ユーザーの削除に失敗しました");
+    }
+  }
 
   const update: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
 
@@ -117,6 +135,9 @@ const userEditPage: VFC = () => {
         <button type="submit">更新する</button>
       </form>
       }
+      <Button color="SKY_BLUE" size="BIG" path="#" onClick={deleteUserData}>
+        ユーザーを削除する
+      </Button>
     </div>
   )
 }

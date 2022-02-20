@@ -2,6 +2,10 @@
 import React, { VFC } from "react";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
+
+/* --- グローバルstate ------------------------------------------------------------------------------------------------- */
+import { floatingNotificationBarState } from "../../../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./userEditPage.module.scss";
@@ -36,6 +40,7 @@ const userEditPage: VFC = () => {
 
   const { user, userLoading, userError } = useUser();
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
+  const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
   const router = useRouter();
 
 
@@ -73,11 +78,23 @@ const userEditPage: VFC = () => {
       });
 
       await router.replace(pagesPath.users._userId(user.id).$url());
-      console.log("更新しました");
+
+      setFloatingNotificationBar({
+        notification: {
+          type: "SUCCESS",
+          message: "ユーザーを更新しました"
+        }
+      });
 
     } catch (error: unknown) {
 
       console.log(error, "ユーザー更新に失敗しました。");
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ユーザーの更新に失敗しました"
+        }
+      });
     }
   }
 

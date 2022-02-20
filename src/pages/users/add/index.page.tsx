@@ -2,6 +2,10 @@
 import React, { VFC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useSetRecoilState } from "recoil";
+
+/* --- グローバルstate ------------------------------------------------------------------------------------------------- */
+import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserAddPage.module.scss";
@@ -31,6 +35,7 @@ const UserAddPage: VFC = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
   const router = useRouter();
+  const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
 
 
   const add: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
@@ -44,14 +49,24 @@ const UserAddPage: VFC = () => {
         avatarUri: null
       });
 
-      console.log(userId);
-
       await router.replace(pagesPath.users._userId(userId).$url());
-      console.log("ユーザーを追加しました");
+
+      setFloatingNotificationBar({
+        notification: {
+          type: "SUCCESS",
+          message: "ユーザーを追加しました"
+        }
+      });
 
     } catch (error: unknown) {
 
       console.log(error, "ユーザーの追加に失敗しました")
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ユーザーの更新に失敗しました"
+        }
+      });
     }
   }
 

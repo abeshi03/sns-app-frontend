@@ -19,27 +19,29 @@ import {
 import { User, UserInputValues } from "../../../../type/User";
 
 
+/* 更新の時だけユーザー情報がいる */
 type Props = {
-  user: User;
-  updateFunction: (inputValue: UnpackNestedValue<UserInputValues>) => Promise<void>;
+  existingUserInfo?: User;
+  submitButtonName: string;
+  submitFunction: (inputValue: UnpackNestedValue<UserInputValues>) => Promise<void>;
 }
 
 
 /* eslint-disable-next-line react/display-name */
 export const UserControlGroup: VFC<Props> = memo((props) => {
 
-  const { user, updateFunction } = props;
+  const { existingUserInfo, submitFunction, submitButtonName } = props;
 
   const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
 
   return (
-    <form className={styles.userControlGroup} onSubmit={handleSubmit(updateFunction)}>
+    <form className={styles.userControlGroup} onSubmit={handleSubmit(submitFunction)}>
       <InputField
         className={styles.inputField}
         type="text"
         label="ユーザー名"
         placeholder="ユーザー名を入力してください"
-        defaultValue={user.name}
+        defaultValue={ existingUserInfo && existingUserInfo.name}
         required={userValidations.name.required}
         inputProps={register("name", {
           required: userValidations.name.required,
@@ -54,7 +56,7 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="email"
         label="メールアドレス"
         placeholder="メールアドレスを入力してください"
-        defaultValue={user.email}
+        defaultValue={existingUserInfo && existingUserInfo.email}
         required={userValidations.email.required}
         inputProps={register("email", {
           required: userValidations.email.required,
@@ -68,7 +70,7 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="text"
         label="説明文"
         placeholder="説明文を入力してください"
-        defaultValue={user.description}
+        defaultValue={existingUserInfo && existingUserInfo.description}
         required={userValidations.description.required}
         inputProps={register("description", {
           required: userValidations.description.required,
@@ -78,7 +80,7 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
       />
 
       { errors.description && userDescriptionErrorMessage(errors.description) }
-      <button type="submit">更新する</button>
+      <button type="submit">{ submitButtonName }</button>
     </form>
   );
 });

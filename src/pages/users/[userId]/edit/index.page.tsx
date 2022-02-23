@@ -115,7 +115,11 @@ const userEditPage: VFC = () => {
       { userLoading && <p>ローディング中</p> }
       { userError && <p>エラー</p> }
       { user &&
-        <UserControlGroup user={user} updateFunction={update} />
+        <UserControlGroup
+          existingUserInfo={user}
+          submitButtonName="ユーザーを更新する"
+          submitFunction={update}
+        />
       }
       <Button color="SKY_BLUE" size="BIG" path="#" onClick={deleteUserData}>
         ユーザーを削除する

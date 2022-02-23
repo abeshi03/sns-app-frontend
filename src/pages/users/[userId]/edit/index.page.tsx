@@ -49,14 +49,33 @@ const userEditPage: VFC = () => {
     try {
 
       if (!user) return;
-      confirm("本当に削除しますか？");
-      await deleteUser(user.id);
 
-      await router.replace(pagesPath.users.$url());
+      if (confirm("本当に削除しますか？")) {
+
+        await deleteUser(user.id);
+        await router.replace(pagesPath.users.$url());
+
+        setFloatingNotificationBar({
+          notification: {
+            type: "SUCCESS",
+            message: "ユーザーを削除しました"
+          }
+        });
+
+      } else {
+        return;
+      }
+
 
     } catch (error: unknown) {
 
       console.log(error, "ユーザーの削除に失敗しました");
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ユーザーの削除に失敗いたしました。"
+        }
+      });
     }
   }
 

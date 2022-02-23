@@ -17,6 +17,7 @@ import {
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { User, UserInputValues } from "../../../../type/User";
+import {ImageUploader} from "../../../molecules/controls/ImageUploader/ImageUploader";
 
 
 /* 更新の時だけユーザー情報がいる */
@@ -78,8 +79,16 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
           maxLength: userValidations.description.maxLength
         })}
       />
-
       { errors.description && userDescriptionErrorMessage(errors.description) }
+
+      <ImageUploader
+        required={true}
+        label="ユーザー画像"
+        guidance="ユーザー画像は1枚アップロードできます"
+        inputProps={register("avatarUri", {
+          required: "false"
+        })}
+      />
       <button type="submit">{ submitButtonName }</button>
     </form>
   );

@@ -4,13 +4,8 @@ import Link from "next/link";
 
 /* --- ルーティング ---------------------------------------------------------------------------------------------------- */
 import { pagesPath } from "../lib/$path";
-import {ChangeEvent} from "react";
 
 const Home: NextPage = () => {
-
-  const onFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
-  };
 
   return (
     <>

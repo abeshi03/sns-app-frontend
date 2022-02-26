@@ -1,7 +1,7 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
 import React, { VFC } from "react";
 import { useRouter } from "next/router";
-import {SubmitHandler, useForm} from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
@@ -25,7 +25,6 @@ import { UserInputValues } from "../../../../type/User";
 
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { deleteUser, updateUser } from "../../../../apis/UsersApi";
-import {encodeFileToBase64} from "../../../../utility/encodeFileToBase64";
 
 
 

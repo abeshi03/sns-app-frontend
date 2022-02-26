@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, { memo, VFC } from "react";
+import React, {ChangeEvent, memo, VFC} from "react";
 import { UnpackNestedValue, useForm } from "react-hook-form";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -17,7 +17,6 @@ import {
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { User, UserInputValues } from "../../../../type/User";
-import {ImageUploader} from "../../../molecules/controls/ImageUploader/ImageUploader";
 
 
 /* 更新の時だけユーザー情報がいる */
@@ -80,15 +79,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         })}
       />
       { errors.description && userDescriptionErrorMessage(errors.description) }
-
-      <ImageUploader
-        required={true}
-        label="ユーザー画像"
-        guidance="ユーザー画像は1枚アップロードできます"
-        inputProps={register("avatarUri", {
-          required: "false"
-        })}
-      />
       <button type="submit">{ submitButtonName }</button>
     </form>
   );

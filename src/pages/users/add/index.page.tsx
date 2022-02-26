@@ -38,8 +38,7 @@ const UserAddPage: VFC = () => {
       const userId = await addUser({
         name: inputValue.name,
         email: inputValue.email,
-        description: inputValue.description,
-        avatarUri: null
+        description: inputValue.description
       });
 
       await router.replace(pagesPath.users._userId(userId).$url());

@@ -1,7 +1,7 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
 import React, { VFC } from "react";
 import { useRouter } from "next/router";
-import { SubmitHandler } from "react-hook-form";
+import {SubmitHandler, useForm} from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
@@ -25,6 +25,7 @@ import { UserInputValues } from "../../../../type/User";
 
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { deleteUser, updateUser } from "../../../../apis/UsersApi";
+import {encodeFileToBase64} from "../../../../utility/encodeFileToBase64";
 
 
 
@@ -34,7 +35,6 @@ const userEditPage: VFC = () => {
   const { user, userLoading, userError } = useUser();
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
   const router = useRouter();
-
 
   const deleteUserData = async (): Promise<void> => {
 
@@ -84,8 +84,7 @@ const userEditPage: VFC = () => {
         id: user.id,
         name: inputValue.name,
         email: inputValue.email,
-        description: inputValue.description,
-        avatarUri: null
+        description: inputValue.description
       });
 
       await router.replace(pagesPath.users._userId(user.id).$url());

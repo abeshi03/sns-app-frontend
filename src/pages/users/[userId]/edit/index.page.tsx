@@ -1,5 +1,5 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
-import React, { VFC } from "react";
+import React, {useCallback, VFC} from "react";
 import { useRouter } from "next/router";
 import { SubmitHandler } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
@@ -70,7 +70,7 @@ const userEditPage: VFC = () => {
     }
   }
 
-  const update: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
+  const update: SubmitHandler<UserInputValues> = useCallback(async (inputValue): Promise<void> => {
 
     try {
 
@@ -105,7 +105,7 @@ const userEditPage: VFC = () => {
         }
       });
     }
-  }
+  }, []);
 
   return (
     <div className={styles.userEditPage}>

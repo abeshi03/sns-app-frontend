@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, { VFC } from "react";
+import React, {useCallback, VFC} from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
@@ -31,7 +31,7 @@ const UserAddPage: VFC = () => {
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
 
 
-  const add: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
+  const add: SubmitHandler<UserInputValues> = useCallback(async (inputValue): Promise<void> => {
 
     try {
 
@@ -60,7 +60,7 @@ const UserAddPage: VFC = () => {
         }
       });
     }
-  }
+  }, []);
 
 
   return (

@@ -53,6 +53,6 @@ export namespace Endpoint {
       limit: number
     }
   ): string {
-    return `${BASE_URL}/posts?/pageNumber=${query.pageNumber}&limit=${query.limit}`;
+    return `${BASE_URL}/posts?pageNumber=${query.pageNumber}&limit=${query.limit}`;
   }
 }

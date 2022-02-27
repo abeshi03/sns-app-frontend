@@ -1,10 +1,25 @@
+/* --- ライブラリー --------------------------------------------------------------------------------------------------- */
 import React, { useEffect, useRef } from "react";
 import useSWRInfinite from "swr/infinite";
-import {useIntersection} from "../utility/intersection";
-import {Post} from "../type/Post";
-import {Endpoint} from "../constants/endpoints";
-import {getPostsFetcher} from "../apis/PostsApi";
-import {PostCard} from "../components/organisms/Card/PostCard/PostCard";
+
+/* --- アセット ------------------------------------------------------------------------------------------------------ */
+import styles from "./Home.module.scss";
+
+/* --- エンドポイント ------------------------------------------------------------------------------------------------- */
+import { Endpoint } from "../constants/endpoints";
+
+/* --- 型定義 -------------------------------------------------------------------------------------------------------- */
+import { Post } from "../type/Post";
+
+/* --- フェッチャー ---------------------------------------------------------------------------------------------------- */
+import { getPostsFetcher } from "../apis/PostsApi";
+
+/* --- 子コンポーネント ------------------------------------------------------------------------------------------------ */
+import { PostCard } from "../components/organisms/Card/PostCard/PostCard";
+
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { useIntersection } from "../utility/intersection";
+
 
 
 export default function App() {
@@ -13,7 +28,7 @@ export default function App() {
 
   const intersection = useIntersection(ref);
 
-  const limit = 15;
+  const limit = 2;
 
   // useSWRInfiniteのキーとなるパラメータ付きURLを生成
   const getKey = (pageNumber: number, previousPageData: Post[]) => {
@@ -48,15 +63,17 @@ export default function App() {
   console.log("際レンダリング")
 
   return (
-    <div className="App">
-      <h2>SWRを使った無限スクロール</h2>
-      {postList.map((post, i) => (
-        <PostCard targetPostData={post}/>
-      ))}
+    <div className={styles.homePage}>
+
+      <div className={styles.postCardsFlow}>
+        {postList.map((post, index) => (
+          <PostCard targetPostData={post} key={index}/>
+        ))}
+      </div>
 
       {/* 次のデータを取得するトリガー */}
       <div ref={ref}>
-        {!isReachingEnd ? "読み込み中" : "すべて読み込みました。"}
+        {!isReachingEnd ? "...Loading" : null}
         {isEmpty ? "取得するデータはありませんでした。" : null}
       </div>
     </div>

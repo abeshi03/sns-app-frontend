@@ -9,7 +9,8 @@ import noImage from "../../../../../public/images/user-profile.png"
 import { Post } from "../../../../type/Post";
 
 type Props = {
-  targetPostData: Post
+  className?: string;
+  targetPostData: Post;
 }
 
 const formattedPostedDate = (postedDate: string) => {
@@ -22,9 +23,9 @@ const formattedPostedDate = (postedDate: string) => {
 
 /* eslint-disable-next-line react/display-name */
 export const PostCard: VFC<Props> = memo((props) => {
-  const { targetPostData } = props;
+  const { targetPostData, className } = props;
   return (
-    <div className={styles.postCard}>
+    <div className={`${styles.postCard} ${className}`}>
       <div className={styles.imageBlock}>
         <div
           className={styles.userAvatar}
@@ -40,6 +41,14 @@ export const PostCard: VFC<Props> = memo((props) => {
           <p className={styles.postedDate}>{ formattedPostedDate(targetPostData.postedDateTime) }</p>
         </div>
         <p className={styles.postContent}>{ targetPostData.content }</p>
+        { targetPostData.imageUri &&
+          <div
+            className={styles.postedImage}
+            role="img"
+            style={{backgroundImage: `url(${targetPostData.imageUri})`}}
+          >
+          </div>
+        }
       </div>
 
     </div>

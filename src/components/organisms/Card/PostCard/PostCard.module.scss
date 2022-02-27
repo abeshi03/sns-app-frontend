@@ -4,6 +4,10 @@
   grid-template-columns: 30px 1fr;
   column-gap: 20px;
 
+  padding-bottom: 15px;
+
+  border-bottom: 1px solid #c1b9b9;
+
 
   .userAvatar {
 
@@ -38,6 +42,22 @@
 
   .postContent {
 
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 18px;
+
     margin-top: 10px;
+  }
+
+
+  .postedImage {
+
+    aspect-ratio: 16/9;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    margin-top: 20px;
   }
 }

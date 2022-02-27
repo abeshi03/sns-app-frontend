@@ -8,9 +8,11 @@ import { pagesPath } from "../lib/$path";
 const Home: NextPage = () => {
 
   return (
-    <Link href={pagesPath.users.$url()}>
-      <a style={{color: "blue", textDecoration: "underline"}}>ユーザー一覧</a>
-    </Link>
+    <>
+      <Link href={pagesPath.users.$url()}>
+        <a style={{color: "blue", textDecoration: "underline"}}>ユーザー一覧</a>
+      </Link>
+    </>
   )
 }
 

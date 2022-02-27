@@ -71,7 +71,7 @@ export async function addUser(addUserData: Omit<User, "id">): Promise<number> {
       name: addUserData.name,
       email: addUserData.email,
       description: addUserData.description,
-      avatarUri: addUserData.avatarUri
+      avatarUri: null
     });
 
     return (response.data).data.id;

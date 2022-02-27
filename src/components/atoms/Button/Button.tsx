@@ -17,7 +17,7 @@ type Props = {
   onClick?: () => void;
 }
 
-/* eslint-disable-next-line react/display-name */
+
 export const Button: VFC<Props> = memo((props) => {
   const { color, path, children, size, style, onClick } = props;
 

@@ -19,7 +19,7 @@ type Props = {
 }
 
 
-/* eslint-disable-next-line react/display-name */
+
 export const UserCard: VFC<Props> = memo((props) => {
 
   const { targetUser, className } = props;

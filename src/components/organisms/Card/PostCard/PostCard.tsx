@@ -21,7 +21,8 @@ const formattedPostedDate = (postedDate: string) => {
   `${formattedDate.getMinutes()}分`;
 }
 
-/* eslint-disable-next-line react/display-name */
+
+
 export const PostCard: VFC<Props> = memo((props) => {
   const { targetPostData, className } = props;
   return (

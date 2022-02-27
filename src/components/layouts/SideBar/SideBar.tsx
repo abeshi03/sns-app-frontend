@@ -6,7 +6,12 @@ import { useRouter } from "next/router";
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./SideBar.module.scss";
 import { HomeIcon } from "../../../../styles/icons/HomeIcon";
-import {pagesPath} from "../../../lib/$path";
+
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../../../lib/$path";
+
+/* --- 型定義 -------------------------------------------------------------------------------------------------------- */
+import { UrlObject } from "url";
 
 
 
@@ -16,35 +21,30 @@ type Props = {
 
 type Navigation = {
   pageName: string;
-  path: string;
+  path: UrlObject;
   icon: JSX.Element;
 }
 
 const navigations: Navigation[] = [
   {
     pageName: "トップ",
-    path: "/",
+    path: pagesPath.$url(),
     icon: <HomeIcon className={styles.icon}/>
   },
   {
     pageName: "ユーザー一覧",
-    path: "/users",
+    path: pagesPath.users.$url(),
     icon: <HomeIcon className={styles.icon}/>
   },
   {
     pageName: "ユーザー追加",
-    path: "/users/add",
+    path: pagesPath.users.add.$url(),
     icon: <HomeIcon className={styles.icon}/>
-  },
-  {
-    pageName: "ページ4",
-    path: "/page4",
-    icon: <HomeIcon className={styles.icon}/>
-  },
+  }
+];
 
-]
 
-/* eslint-disable-next-line react/display-name */
+
 export const SideBar: VFC<Props> = memo((props) => {
 
   const { children } = props;
@@ -53,8 +53,8 @@ export const SideBar: VFC<Props> = memo((props) => {
 
   const router = useRouter();
 
-  const isPageActive = (pagePath: string): boolean => {
-    return pagePath === String(router.route)
+  const isPageActive = (pagePath: UrlObject): boolean => {
+    return String(pagePath) === router.route
   }
 
 

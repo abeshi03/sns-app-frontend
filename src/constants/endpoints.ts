@@ -49,10 +49,19 @@ export namespace Endpoint {
   /* --- 投稿一覧取得 -------------------------------------------------------------------------------------------------- */
   export function getPosts(
     query: {
-      pageNumber: number,
-      limit: number
+      pageNumber: number;
+      limit: number;
+      searchByPostContent?: string;
     }
   ): string {
-    return `${BASE_URL}/posts?pageNumber=${query.pageNumber}&limit=${query.limit}`;
+
+    if (!query.searchByPostContent) {
+      return `${BASE_URL}/posts?pageNumber=${query.pageNumber}&limit=${query.limit}`;
+    }
+
+    return `${BASE_URL}/` +
+      `posts?pageNumber=${query.pageNumber}` +
+      `&limit=${query.limit}` +
+      `&searchByPostContent=${query.searchByPostContent}`;
   }
 }

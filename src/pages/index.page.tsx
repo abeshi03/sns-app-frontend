@@ -51,16 +51,17 @@ export default function App() {
 
   useEffect(() => {
     // トリガーが表示されたらデータを取得
-    if (intersection && !isReachingEnd) {
-      getNextDataPosts();
-    }
+    setTimeout(() => {
+      if (intersection && !isReachingEnd) {
+        getNextDataPosts();
+      }
+    }, 1000)
   }, [intersection, isReachingEnd]);
 
   if (error) return "failed to load";
   if (!posts) return "loading";
 
   const postList = posts.flat();
-  console.log("際レンダリング")
 
   return (
     <div className={styles.homePage}>

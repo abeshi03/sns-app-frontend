@@ -2,6 +2,7 @@
 import type { NextPage } from 'next'
 import { ChangeEvent, useState } from "react";
 import Papa from "papaparse"
+import styles from "./csvDemoPage.module.scss";
 
 
 type userCsvData = {
@@ -39,10 +40,10 @@ const CsvDemo: NextPage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.csvDemoPage}>
       <h1>csvのimport確認</h1>
       <input type="file" accept="text/csv" onChange={handleFileSelect} />
-      <table>
+      <table className={styles.table}>
         <tr>
           <td>名前</td>
           <td>メールアドレス</td>

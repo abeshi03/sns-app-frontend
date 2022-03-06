@@ -14,7 +14,7 @@ type AlertBoxProps = {
   title: string;
   description: string;
   alertType: AlertType;
-  style?: React.CSSProperties;
+  className?: string;
 };
 
 const selectedIcon = (alertType: AlertType): JSX.Element => {
@@ -42,10 +42,10 @@ const alertTypeModifierCSS_Class = (alertType: AlertType): string => {
 
 export const AlertBox: VFC<AlertBoxProps> = memo((props) => {
 
-  const { title, description, alertType, style } = props;
+  const { title, description, alertType, className } = props;
 
   return (
-    <div className={`${alertTypeModifierCSS_Class(alertType)} ${styles.alertBox}`} style={style}>
+    <div className={`${alertTypeModifierCSS_Class(alertType)} ${styles.alertBox} ${className}`}>
       <div className={styles.leftColumn}>
         <div className={styles.icon}>{ selectedIcon(alertType) }</div>
       </div>

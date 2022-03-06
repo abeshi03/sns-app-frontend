@@ -15,34 +15,35 @@ type userCsvData = {
 const CsvDemo: NextPage = () => {
 
   const [ usersCsvData, setUsersCsvData ] = useState<userCsvData[]>([]);
+  const [ isError, setIsError ] = useState(false);
 
-  const handleFileSelect = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleFileSelect = (event: ChangeEvent<HTMLInputElement>): void => {
 
     if (!event.target.files) return;
     const file: File = event.target.files[0];
 
-    try {
+    Papa.parse<userCsvData>(file, {
+      complete: function(results) {
+        const keys = Object.keys(results.data[0]);
 
-      await Papa.parse<userCsvData>(file, {
-        complete: function(results) {
-          setUsersCsvData(results.data);
-        },
-        header: true,
-        escapeChar: '"'
-      });
-
-    } catch (error: unknown) {
-
-      if (error instanceof Error) {
-        console.log("ファイルのアップロードに失敗しました", error.message);
-      }
-    }
+        if (!keys.includes("name") || !keys.includes("email") || !keys.includes("role")) {
+          alert("アップロードに失敗しました。name, email, roleのcsvファイルのみアップロード可能です");
+          setIsError(true);
+          return;
+        }
+        setIsError(false);
+        setUsersCsvData(results.data);
+      },
+      header: true
+    });
   }
 
   return (
     <div className={styles.csvDemoPage}>
       <h1>csvのimport確認</h1>
       <input type="file" accept="text/csv" onChange={handleFileSelect} />
+      {usersCsvData.length === 0 && !isError && <p>csvファイルをアップロードしてください</p>}
+      {isError && <p>無効なcsvファイルです</p>}
       <table className={styles.table}>
         <tr>
           <td>名前</td>

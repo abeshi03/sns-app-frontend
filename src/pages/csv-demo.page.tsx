@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from "react";
 import Papa from "papaparse"
 
 
-type CsvData = {
+type userCsvData = {
   name: string;
   email: string;
   role: string;
@@ -13,19 +13,18 @@ type CsvData = {
 
 const CsvDemo: NextPage = () => {
 
-  const [ csvData, setCsvData ] = useState<CsvData[]>([]);
+  const [ usersCsvData, setUsersCsvData ] = useState<userCsvData[]>([]);
 
   const handleFileSelect = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
 
     if (!event.target.files) return;
-
     const file: File = event.target.files[0];
 
     try {
 
-      await Papa.parse<CsvData>(file, {
+      await Papa.parse<userCsvData>(file, {
         complete: function(results) {
-          setCsvData(results.data);
+          setUsersCsvData(results.data);
         },
         header: true,
         escapeChar: '"'
@@ -43,13 +42,22 @@ const CsvDemo: NextPage = () => {
     <div>
       <h1>csvのimport確認</h1>
       <input type="file" accept="text/csv" onChange={handleFileSelect} />
-      {csvData.map((csv) => (
-        <>
-          <p>{csv.name}</p>
-          <p>{csv.email}</p>
-          <p>{csv.role}</p>
-        </>
-      ))}
+      <table>
+        <tr>
+          <td>名前</td>
+          <td>メールアドレス</td>
+          <td>権限</td>
+        </tr>
+        <tbody>
+          {usersCsvData.map((userCsvData) => (
+            <tr>
+              <td>{userCsvData.name}</td>
+              <td>{userCsvData.email}</td>
+              <td>{userCsvData.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

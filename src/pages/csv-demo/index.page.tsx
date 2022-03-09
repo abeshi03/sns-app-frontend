@@ -19,7 +19,7 @@ type userCsvData = {
 
 const CsvDemo: NextPage = () => {
 
-  const [ usersCsvData, setUsersCsvData ] = useState<userCsvData[]>([]);
+  const [ usersCsvData, setUsersCsvData ] = useState<userCsvData[] | null>(null);
   const [ isError, setIsError ] = useState(false);
 
   const handleFileSelect = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -55,13 +55,15 @@ const CsvDemo: NextPage = () => {
     <div className={styles.csvDemoPage}>
       <h1>csvのimport確認</h1>
       <input type="file" accept="text/csv" onChange={handleFileSelect} />
-      {usersCsvData.length === 0 && !isError &&
+      {!usersCsvData &&
         <AlertBox
           className={styles.alertBox}
           title="ファイルをアップロードしてください"
           description="name, email, roleのcsvファイルをアップロードしてください"
           alertType="INFO"
-        />
+        />}
+      {usersCsvData?.length === 0 && !isError &&
+        <p>アップロードされたファイルがありません</p>
       }
       {isError &&
       <AlertBox
@@ -80,7 +82,7 @@ const CsvDemo: NextPage = () => {
           </tr>
         </thead>
         <tbody>
-          {usersCsvData.map((userCsvData) => (
+          {usersCsvData?.map((userCsvData) => (
             <tr key={userCsvData.email}>
               <td>{userCsvData.name}</td>
               <td>{userCsvData.email}</td>

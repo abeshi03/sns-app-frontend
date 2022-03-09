@@ -38,7 +38,8 @@ export default function App() {
 
   const intersection = useIntersection(ref);
 
-  const limit = 15;
+  const limit = 4;
+
 
   // useSWRInfiniteのキーとなるパラメータ付きURLを生成
   const getKey = (pageNumber: number, previousPageData: Post[]) => {

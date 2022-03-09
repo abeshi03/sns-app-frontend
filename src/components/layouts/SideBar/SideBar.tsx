@@ -54,7 +54,7 @@ export const SideBar: VFC<Props> = memo((props) => {
   const router = useRouter();
 
   const isPageActive = (pagePath: UrlObject): boolean => {
-    return String(pagePath.pathname) === router.route
+    return pagePath.pathname === router.route
   }
 
 

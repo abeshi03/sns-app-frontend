@@ -1,5 +1,5 @@
 /* --- ライブラリー --------------------------------------------------------------------------------------------------- */
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------ */
@@ -40,8 +40,6 @@ export default function App() {
 
   const limit = 4;
 
-
-  // useSWRInfiniteのキーとなるパラメータ付きURLを生成
   const getKey = (pageNumber: number, previousPageData: Post[]) => {
     if (previousPageData && !previousPageData.length) return null;
     // pageIndexは0からのため+1をしてpageIndexを1からにする
@@ -65,7 +63,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    // トリガーが表示されたらデータを取得
+    // ローディングの確認用にsetTimeout
     setTimeout(() => {
       if (intersection && !isReachingEnd) {
         getNextDataPosts();
@@ -77,8 +75,6 @@ export default function App() {
   if (!posts) return "loading";
 
   const postList = posts.flat();
-
-  console.log("際レンダリング")
 
   return (
     <div className={styles.homePage}>

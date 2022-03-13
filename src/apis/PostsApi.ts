@@ -17,7 +17,7 @@ export async function getPostsFetcher(endPoint: string): Promise<Post[]> {
 
    } catch (error: unknown) {
 
-    console.log(error);
+    console.error(error);
     throw new Error("API ERROR: getPosts");
   }
 }

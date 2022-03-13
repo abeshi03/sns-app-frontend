@@ -6,7 +6,7 @@ type Props = {
   className: string;
 }
 
-/* eslint-disable-next-line react/display-name */
+
 export const HomeIcon: VFC<Props> = memo((props) => {
 
   const { className } = props

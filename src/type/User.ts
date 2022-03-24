@@ -3,7 +3,7 @@ export type User = {
   email: string;
   name: string;
   description: string;
-  avatarUri?: string | null;
+  avatarUri?: string;
 }
 
 
@@ -11,5 +11,5 @@ export type UserInputValues = {
   name: string;
   email: string;
   description: string;
-  avatarUri?: string | null;
+  avatarUri?: FileList | null;
 }

@@ -1,7 +1,7 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
-import React, { VFC } from "react";
+import React, {useCallback, VFC} from "react";
 import { useRouter } from "next/router";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
@@ -14,8 +14,8 @@ import styles from "./userEditPage.module.scss";
 import { useUser } from "../../../../hooks/useUser";
 
 /* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
-import { InputField } from "../../../../components/molecules/controls/InputField/InputField";
 import { Button } from "../../../../components/atoms/Button/Button";
+import { UserControlGroup } from "../../../../components/organisms/ControlGroups/UserControlGroup/UserControlGroup";
 
 /* --- ルーティング ---------------------------------------------------------------------------------------------------- */
 import { pagesPath } from "../../../../lib/$path";
@@ -26,41 +26,51 @@ import { UserInputValues } from "../../../../type/User";
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { deleteUser, updateUser } from "../../../../apis/UsersApi";
 
-/* --- バリデーション --------------------------------------------------------------------------------------------------- */
-import {
-  userNameErrorMessages,
-  userDescriptionErrorMessage,
-  emailErrorMessage,
-  userValidations
-} from "../../../../config/validations/userValidations";
 
 
 
 const userEditPage: VFC = () => {
 
   const { user, userLoading, userError } = useUser();
-  const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
   const router = useRouter();
-
 
   const deleteUserData = async (): Promise<void> => {
 
     try {
 
       if (!user) return;
-      confirm("本当に削除しますか？");
-      await deleteUser(user.id);
 
-      await router.replace(pagesPath.users.$url());
+      if (confirm("本当に削除しますか？")) {
+
+        await deleteUser(user.id);
+        await router.replace(pagesPath.users.$url());
+
+        setFloatingNotificationBar({
+          notification: {
+            type: "SUCCESS",
+            message: "ユーザーを削除しました"
+          }
+        });
+
+      } else {
+        return;
+      }
+
 
     } catch (error: unknown) {
 
       console.log(error, "ユーザーの削除に失敗しました");
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ユーザーの削除に失敗いたしました。"
+        }
+      });
     }
   }
 
-  const update: SubmitHandler<UserInputValues> = async (inputValue): Promise<void> => {
+  const update: SubmitHandler<UserInputValues> = useCallback(async (inputValue): Promise<void> => {
 
     try {
 
@@ -73,8 +83,7 @@ const userEditPage: VFC = () => {
         id: user.id,
         name: inputValue.name,
         email: inputValue.email,
-        description: inputValue.description,
-        avatarUri: null
+        description: inputValue.description
       });
 
       await router.replace(pagesPath.users._userId(user.id).$url());
@@ -96,7 +105,7 @@ const userEditPage: VFC = () => {
         }
       });
     }
-  }
+  }, []);
 
   return (
     <div className={styles.userEditPage}>
@@ -104,53 +113,11 @@ const userEditPage: VFC = () => {
       { userLoading && <p>ローディング中</p> }
       { userError && <p>エラー</p> }
       { user &&
-      <form className={styles.userControlGroup} onSubmit={handleSubmit(update)}>
-        <InputField
-          className={styles.inputField}
-          type="text"
-          label="ユーザー名"
-          placeholder="ユーザー名を入力してください"
-          defaultValue={user.name}
-          required={userValidations.name.required}
-          inputProps={register("name", {
-            required: userValidations.name.required,
-            minLength: userValidations.name.minLength,
-            maxLength: userValidations.name.maxLength
-          })}
+        <UserControlGroup
+          existingUserInfo={user}
+          submitButtonName="ユーザーを更新する"
+          submitFunction={update}
         />
-        { errors.name && userNameErrorMessages(errors.name) }
-
-        <InputField
-          className={styles.inputField}
-          type="email"
-          label="メールアドレス"
-          placeholder="メールアドレスを入力してください"
-          defaultValue={user.email}
-          required={userValidations.email.required}
-          inputProps={register("email", {
-            required: userValidations.email.required,
-            pattern: userValidations.email.regexp
-          })}
-        />
-        { errors.email && emailErrorMessage(errors.email) }
-
-        <InputField
-          className={styles.inputField}
-          type="text"
-          label="説明文"
-          placeholder="説明文を入力してください"
-          defaultValue={user.description}
-          required={userValidations.description.required}
-          inputProps={register("description", {
-            required: userValidations.description.required,
-            minLength: userValidations.description.minLength,
-            maxLength: userValidations.description.maxLength
-          })}
-        />
-
-        { errors.description && userDescriptionErrorMessage(errors.description) }
-        <button type="submit">更新する</button>
-      </form>
       }
       <Button color="SKY_BLUE" size="BIG" path="#" onClick={deleteUserData}>
         ユーザーを削除する
@@ -160,3 +127,4 @@ const userEditPage: VFC = () => {
 }
 
 export default userEditPage;
+

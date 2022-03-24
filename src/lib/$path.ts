@@ -1,6 +1,9 @@
 /* eslint-disable */
 // prettier-ignore
 export const pagesPath = {
+  csv_demo: {
+    $url: (url?: { hash?: string }) => ({ pathname: '/csv-demo' as const, hash: url?.hash })
+  },
   users: {
     _userId: (userId: string | number) => ({
       edit: {

@@ -1,0 +1,32 @@
+.csvDemoPage {
+
+  max-width: 1024px;
+  margin: 0 auto;
+
+  .table {
+
+    width: 100%;
+    table-layout: fixed;
+
+    margin-top: 20px;
+
+    thead,
+    tr:nth-child(even) {
+      background: #F6F8FA;
+    }
+
+    td, th {
+
+      height: 50px;
+
+      font-weight: bold;
+      vertical-align: middle;
+    }
+  }
+
+
+  .alertBox {
+
+    margin-top: 20px;
+  }
+}

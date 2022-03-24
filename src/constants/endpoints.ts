@@ -44,4 +44,24 @@ export namespace Endpoint {
   export function deleteUser(pathParameter: { userId: number; }): string {
     return `${BASE_URL}/users/${pathParameter.userId}`;
   }
+
+
+  /* --- 投稿一覧取得 -------------------------------------------------------------------------------------------------- */
+  export function getPosts(
+    query: {
+      pageNumber: number;
+      limit: number;
+      searchByPostContent?: string;
+    }
+  ): string {
+
+    if (!query.searchByPostContent) {
+      return `${BASE_URL}/posts?pageNumber=${query.pageNumber}&limit=${query.limit}`;
+    }
+
+    return `${BASE_URL}/` +
+      `posts?pageNumber=${query.pageNumber}` +
+      `&limit=${query.limit}` +
+      `&searchByPostContent=${query.searchByPostContent}`;
+  }
 }

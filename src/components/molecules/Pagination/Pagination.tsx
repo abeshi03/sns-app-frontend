@@ -13,7 +13,7 @@ type Props = {
   className?: string;
 }
 
-/* eslint-disable-next-line react/display-name */
+
 export const Pagination: VFC<Props> = memo((props) => {
 
   const { totalCount, currentPageNumber, perPageNumber, onChangePage, className } = props;

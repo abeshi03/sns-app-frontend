@@ -15,7 +15,6 @@ type Input = {
 };
 
 
-/* eslint-disable-next-line react/display-name */
 export const SearchInputField: VFC<Props> = memo((props) => {
 
   const { onSearchFunction } = props;

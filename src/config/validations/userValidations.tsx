@@ -23,6 +23,12 @@ export const userValidations = {
     maxLength: 200
   },
 
+  password: {
+    requred: true,
+    minLength: 4,
+    maxLength: 255
+  }
+
   // avatarImage: {
   //   required: false,
   //   accept: ".png, .jpeg",
@@ -63,6 +69,20 @@ export const userDescriptionErrorMessage = (error: FieldError) => {
 
     case "maxLength": return <ErrorMessage
       message={`説明文は最小${userValidations.description.minLength}文字 ~ ${userValidations.description.maxLength}文字で入力してください`}
+    />
+  }
+}
+
+export const userPasswordErrorMessage = (error: FieldError) => {
+  switch (error.type) {
+    case "required": return <ErrorMessage message={"パスワードは必須です"}/>;
+
+    case "minLength": return <ErrorMessage
+      message={`パスワードは最小${userValidations.password.minLength}文字 ~ ${userValidations.password.maxLength}文字で入力してください`}
+    />
+
+    case "maxLength": return <ErrorMessage
+      message={`パスワードは最小${userValidations.password.minLength}文字 ~ ${userValidations.password.maxLength}文字で入力してください`}
     />
   }
 }

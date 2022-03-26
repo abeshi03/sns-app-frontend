@@ -1,14 +1,32 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { memo, VFC } from "react";
 import { NextPage } from "next";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./SignIn.module.scss";
 
+/* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
+import { InputField } from "../../components/molecules/controls/InputField/InputField";
+
+export type SignInInputValues = {
+  email: string;
+  password: string;
+};
 
 const SignInPage: NextPage = () => {
+
+  const { register, handleSubmit, formState: { errors } } = useForm<SignInInputValues>();
+
+  const signIn = "hoge";
+
   return (
-    <div>テスト</div>
+    <div className={styles.signInPage}>
+      <form className={styles.signInControlGroup} onSubmit={handleSubmit(signIn)}>
+
+
+      </form>
+    </div>
   )
 };
 

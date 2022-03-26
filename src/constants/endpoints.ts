@@ -2,6 +2,9 @@ export const BASE_URL = "http://localhost:5000";
 
 export namespace Endpoint {
 
+  /* --- 認証関連 ----------------------------------------------------------------------------------------------------- */
+  export const signIn = `${BASE_URL}/auth/signIn`;
+
   /* --- ユーザー一覧取得 ----------------------------------------------------------------------------------------------- */
   export function getUsers(
     query: {

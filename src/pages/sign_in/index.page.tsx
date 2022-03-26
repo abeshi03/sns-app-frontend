@@ -1,7 +1,12 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, { memo, VFC } from "react";
+import React from "react";
 import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
+
+/* --- グローバルstate ------------------------------------------------------------------------------------------------- */
+import { currentUserState } from "../../store/auth/currentUserState";
+import { floatingNotificationBarState } from "../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./SignIn.module.scss";
@@ -13,6 +18,9 @@ import { Button } from "../../components/atoms/Button/Button";
 /* --- バリデーション -------------------------------------------------------------------------------------------------- */
 import { emailErrorMessage, userValidations, userPasswordErrorMessage } from "../../config/validations/userValidations";
 
+/* --- api ----------------------------------------------------------------------------------------------------------- */
+import { signInApi } from "../../apis/AuthApis";
+
 export type SignInInputValues = {
   email: string;
   password: string;
@@ -20,10 +28,41 @@ export type SignInInputValues = {
 
 const SignInPage: NextPage = () => {
 
+  const setCurrentUser = useSetRecoilState(currentUserState);
+  const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
+
   const { register, handleSubmit, formState: { errors } } = useForm<SignInInputValues>();
 
   const signIn: SubmitHandler<SignInInputValues> = async (inputValue): Promise<void> => {
-    return
+
+    try {
+
+      const userResponse = await signInApi({
+        email: inputValue.email,
+        password: inputValue.password
+      });
+
+      setCurrentUser({
+        currentUser: userResponse
+      });
+
+      setFloatingNotificationBar({
+        notification: {
+          type: "SUCCESS",
+          message: "ログインしました"
+        }
+      });
+
+    } catch (error: unknown) {
+      console.error(error);
+
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ログインに失敗しました"
+        }
+      })
+    }
   }
 
   return (

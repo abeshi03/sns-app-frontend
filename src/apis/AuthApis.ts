@@ -13,21 +13,13 @@ type SignInRequestBody = {
   password: string;
 }
 
-export async function signIn(requestBody: SignInRequestBody): Promise<User> {
 
-  try {
+export async function signInApi(requestBody: SignInRequestBody): Promise<User> {
+  const response: ApiResponse<User> = await axios.post(Endpoint.signIn, {
+    email: requestBody.email,
+    password: requestBody.password
+  });
 
-    const response: ApiResponse<User> = await axios.post(Endpoint.signIn, {
-      email: requestBody.email,
-      password: requestBody.password
-    });
-
-    return (response.data).data;
-
-  } catch (error: unknown) {
-
-    console.error(error);
-    throw new Error("API ERROR: signIn");
-  }
+  return (response.data).data;
 }
 

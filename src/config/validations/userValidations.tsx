@@ -24,7 +24,7 @@ export const userValidations = {
   },
 
   password: {
-    requred: true,
+    required: true,
     minLength: 4,
     maxLength: 255
   }

@@ -12,6 +12,7 @@ type Props = {
   color: "SKY_BLUE" | "WHITE";
   size: "SMALL" | "BIG";
   path: string | UrlObject;
+  type?: "submit"
   children: ReactNode;
   style?: React.CSSProperties;
   onClick?: () => void;
@@ -19,7 +20,7 @@ type Props = {
 
 
 export const Button: VFC<Props> = memo((props) => {
-  const { color, path, children, size, style, onClick } = props;
+  const { color, path, children, size, style, onClick, type } = props;
 
   const ButtonColorModifierCSS_Class = (): string => {
     switch (color) {
@@ -40,7 +41,11 @@ export const Button: VFC<Props> = memo((props) => {
     <>
       <Link href={path}>
         <a className={styles.path} style={style}>
-          <button onClick={onClick} className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}>
+          <button
+            onClick={onClick}
+            className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}
+            type={type}
+          >
             { children }
           </button>
         </a>

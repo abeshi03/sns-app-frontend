@@ -1,0 +1,13 @@
+.signInPage {
+
+  max-width: 600px;
+  margin: 0 auto;
+
+
+  .signInControlGroup {
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+  }
+}

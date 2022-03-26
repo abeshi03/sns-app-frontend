@@ -4,6 +4,9 @@ export const pagesPath = {
   csv_demo: {
     $url: (url?: { hash?: string }) => ({ pathname: '/csv-demo' as const, hash: url?.hash })
   },
+  sign_in: {
+    $url: (url?: { hash?: string }) => ({ pathname: '/sign_in' as const, hash: url?.hash })
+  },
   users: {
     _userId: (userId: string | number) => ({
       edit: {

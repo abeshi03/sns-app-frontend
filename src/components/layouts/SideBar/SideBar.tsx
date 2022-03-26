@@ -40,7 +40,12 @@ const navigations: Navigation[] = [
     pageName: "ユーザー追加",
     path: pagesPath.users.add.$url(),
     icon: <HomeIcon className={styles.icon}/>
-  }
+  },
+  {
+    pageName: "ログイン",
+    path: pagesPath.sign_in.$url(),
+    icon: <HomeIcon className={styles.icon}/>
+  },
 ];
 
 

@@ -22,7 +22,9 @@ const SignInPage: NextPage = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignInInputValues>();
 
-  const signIn = "hoge";
+  const signIn: SubmitHandler<SignInInputValues> = async (inputValue): Promise<void> => {
+    return
+  }
 
   return (
     <div className={styles.signInPage}>

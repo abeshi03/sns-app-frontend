@@ -39,17 +39,27 @@ export const Button: VFC<Props> = memo((props) => {
 
   return (
     <>
-      <Link href={path}>
-        <a className={styles.path} style={style}>
-          <button
-            onClick={onClick}
-            className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}
-            type={type}
-          >
-            { children }
-          </button>
-        </a>
-      </Link>
+      {type ? (
+        <button
+          onClick={onClick}
+          className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}
+          type={type}
+        >
+          { children }
+        </button>
+      ) : (
+        <Link href={path}>
+          <a className={styles.path} style={style}>
+            <button
+              onClick={onClick}
+              className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}
+              type={type}
+            >
+              { children }
+            </button>
+          </a>
+        </Link>
+      ) }
     </>
   );
 });

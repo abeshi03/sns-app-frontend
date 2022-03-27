@@ -1,8 +1,10 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React from "react";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
+import { pagesPath } from "../../lib/$path";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { currentUserState } from "../../store/auth/currentUserState";
@@ -31,6 +33,8 @@ const SignInPage: NextPage = () => {
   const setCurrentUser = useSetRecoilState(currentUserState);
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
 
+  const router = useRouter();
+
   const { register, handleSubmit, formState: { errors } } = useForm<SignInInputValues>();
 
   const signIn: SubmitHandler<SignInInputValues> = async (inputValue): Promise<void> => {
@@ -45,6 +49,8 @@ const SignInPage: NextPage = () => {
       setCurrentUser({
         currentUser: userResponse
       });
+
+      await router.replace(pagesPath.$url());
 
       setFloatingNotificationBar({
         notification: {
@@ -61,7 +67,7 @@ const SignInPage: NextPage = () => {
           type: "ERROR",
           message: "ログインに失敗しました"
         }
-      })
+      });
     }
   }
 

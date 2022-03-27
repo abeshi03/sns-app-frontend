@@ -124,9 +124,11 @@
     padding-right: $paddings;
     padding-left: $paddings;
 
+    cursor: pointer;
+
     &:hover {
 
-      background-color: #1B555A;
+      background-color: #027fce;
     }
   }
 

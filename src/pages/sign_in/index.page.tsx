@@ -1,9 +1,9 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React from "react";
+import React, {useEffect} from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { pagesPath } from "../../lib/$path";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
@@ -23,6 +23,10 @@ import { emailErrorMessage, userValidations, userPasswordErrorMessage } from "..
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { AuthApi } from "../../apis/AuthApis";
 
+/* --- 補助関数 -------------------------------------------------------------------------------------------------------- */
+import { isNotNull } from "../../utility/typeGuard/isNotNull";
+
+
 export type SignInInputValues = {
   email: string;
   password: string;
@@ -30,6 +34,7 @@ export type SignInInputValues = {
 
 const SignInPage: NextPage = () => {
 
+  const currentUser = useRecoilValue(currentUserState).currentUser;
   const setCurrentUser = useSetRecoilState(currentUserState);
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
 
@@ -70,6 +75,20 @@ const SignInPage: NextPage = () => {
       });
     }
   }
+
+
+  useEffect(() => {
+    if (isNotNull(currentUser)) {
+      router.replace(pagesPath.$url()).then(() => {
+        setFloatingNotificationBar({
+          notification: {
+            type: "WARNING",
+            message: "すでにログインしています"
+          }
+        })
+      });
+    }
+  }, []);
 
   return (
     <div className={styles.signInPage}>

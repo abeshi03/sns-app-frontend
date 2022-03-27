@@ -1,11 +1,12 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, {useCallback, VFC} from "react";
+import React, {useCallback, useEffect, VFC} from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
+import { currentUserState } from "../../../store/auth/currentUserState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserAddPage.module.scss";
@@ -22,12 +23,16 @@ import { UserControlGroup } from "../../../components/organisms/ControlGroups/Us
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { addUser } from "../../../apis/UsersApi";
 
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { isNull } from "../../../utility/typeGuard/isNull";
+
 
 
 const UserAddPage: VFC = () => {
 
 
   const router = useRouter();
+  const currentUser = useRecoilValue(currentUserState).currentUser;
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
 
 
@@ -58,6 +63,19 @@ const UserAddPage: VFC = () => {
           type: "ERROR",
           message: "ユーザーの更新に失敗しました"
         }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isNull(currentUser)) {
+      router.replace(pagesPath.sign_in.$url()).then(() => {
+        setFloatingNotificationBar({
+          notification: {
+            type: "WARNING",
+            message: "ログインしてください"
+          }
+        })
       });
     }
   }, []);

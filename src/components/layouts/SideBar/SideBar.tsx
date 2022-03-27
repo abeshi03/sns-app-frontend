@@ -143,14 +143,14 @@ export const SideBar: VFC<Props> = memo((props) => {
               </Link>
             }
             {navigation.isDisplay && navigation.onClickFunction &&
-              <p
+              <div
                 className={styles.flexContainer}
                 role="navigation"
                 onClick={navigation.onClickFunction}
               >
                 { navigation.icon }
                 { menuOpen && <p className={styles.pageName}>{ navigation.pageName }</p> }
-              </p>
+              </div>
             }
           </React.Fragment>
         ))}

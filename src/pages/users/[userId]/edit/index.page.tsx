@@ -1,11 +1,12 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
-import React, {useCallback, VFC} from "react";
+import React, { useCallback, VFC, useEffect } from "react";
 import { useRouter } from "next/router";
 import { SubmitHandler } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { floatingNotificationBarState } from "../../../../store/floatingNotificationBar/floatingNotificationBarState";
+import { currentUserState } from "../../../../store/auth/currentUserState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./userEditPage.module.scss";
@@ -26,13 +27,15 @@ import { UserInputValues } from "../../../../type/User";
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { deleteUser, updateUser } from "../../../../apis/UsersApi";
 
-
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { isNull } from "../../../../utility/typeGuard/isNull";
 
 
 const UserEditPage: VFC = () => {
 
   const { user, userLoading, userError } = useUser();
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
+  const currentUser = useRecoilValue(currentUserState).currentUser;
   const router = useRouter();
 
   const deleteUserData = async (): Promise<void> => {
@@ -106,6 +109,21 @@ const UserEditPage: VFC = () => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (isNull(currentUser)) {
+      router.push(pagesPath.sign_in.$url(), {
+        pathname: `/users/${user?.id}/edit`
+      }).then(() => {
+        setFloatingNotificationBar({
+          notification: {
+            type: "WARNING",
+            message: "ログインしてください"
+          }
+        });
+      });
+    }
+  }, [])
 
   return (
     <div className={styles.userEditPage}>

@@ -69,7 +69,9 @@ const UserAddPage: VFC = () => {
 
   useEffect(() => {
     if (isNull(currentUser)) {
-      router.replace(pagesPath.sign_in.$url()).then(() => {
+      router.push(pagesPath.sign_in.$url(), {
+        pathname: pagesPath.users.add.$url().pathname
+      }).then(() => {
         setFloatingNotificationBar({
           notification: {
             type: "WARNING",

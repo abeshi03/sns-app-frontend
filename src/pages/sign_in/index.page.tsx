@@ -25,6 +25,7 @@ import { AuthApi } from "../../apis/AuthApis";
 
 /* --- 補助関数 -------------------------------------------------------------------------------------------------------- */
 import { isNotNull } from "../../utility/typeGuard/isNotNull";
+import {route} from "next/dist/server/router";
 
 
 export type SignInInputValues = {
@@ -55,7 +56,11 @@ const SignInPage: NextPage = () => {
         currentUser: userResponse
       });
 
-      await router.replace(pagesPath.$url());
+      if (router.asPath === "sign_in") {
+        await router.push(pagesPath.$url());
+      } else {
+        await router.push(router.asPath);
+      }
 
       setFloatingNotificationBar({
         notification: {
@@ -78,6 +83,7 @@ const SignInPage: NextPage = () => {
 
 
   useEffect(() => {
+    console.log(router);
     if (isNotNull(currentUser)) {
       router.replace(pagesPath.$url()).then(() => {
         setFloatingNotificationBar({

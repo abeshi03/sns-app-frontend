@@ -29,7 +29,7 @@ import { deleteUser, updateUser } from "../../../../apis/UsersApi";
 
 
 
-const userEditPage: VFC = () => {
+const UserEditPage: VFC = () => {
 
   const { user, userLoading, userError } = useUser();
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
@@ -126,5 +126,5 @@ const userEditPage: VFC = () => {
   )
 }
 
-export default userEditPage;
+export default UserEditPage;
 

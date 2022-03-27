@@ -9,7 +9,7 @@ export type CurrentUser = {
 
 const { persistAtom } = recoilPersist({
   key: "recoil-persist",
-  storage: typeof window === "undefined" ? undefined : sessionStorage
+  storage: typeof window === "undefined" ? undefined : localStorage
 });
 
 const initialState: CurrentUser = {

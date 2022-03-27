@@ -13,13 +13,20 @@ type SignInRequestBody = {
   password: string;
 }
 
+export namespace AuthApi {
 
-export async function signInApi(requestBody: SignInRequestBody): Promise<User> {
-  const response: ApiResponse<User> = await axios.post(Endpoint.signIn, {
-    email: requestBody.email,
-    password: requestBody.password
-  });
+  export async function signIn(requestBody: SignInRequestBody): Promise<User> {
+    const response: ApiResponse<User> = await axios.post(Endpoint.signIn, {
+      email: requestBody.email,
+      password: requestBody.password
+    });
 
-  return (response.data).data;
+    return (response.data).data;
+  }
+
+  export async function signOut(): Promise<void> {
+    await axios.post(Endpoint.signOut);
+  }
 }
+
 

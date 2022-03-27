@@ -19,7 +19,7 @@ import { Button } from "../../components/atoms/Button/Button";
 import { emailErrorMessage, userValidations, userPasswordErrorMessage } from "../../config/validations/userValidations";
 
 /* --- api ----------------------------------------------------------------------------------------------------------- */
-import { signInApi } from "../../apis/AuthApis";
+import { AuthApi } from "../../apis/AuthApis";
 
 export type SignInInputValues = {
   email: string;
@@ -37,7 +37,7 @@ const SignInPage: NextPage = () => {
 
     try {
 
-      const userResponse = await signInApi({
+      const userResponse = await AuthApi.signIn({
         email: inputValue.email,
         password: inputValue.password
       });

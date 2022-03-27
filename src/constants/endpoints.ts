@@ -5,6 +5,8 @@ export namespace Endpoint {
   /* --- 認証関連 ----------------------------------------------------------------------------------------------------- */
   export const signIn = `${BASE_URL}/auth/signIn`;
 
+  export const signOut = `${BASE_URL}/auth/signOut`;
+
   /* --- ユーザー一覧取得 ----------------------------------------------------------------------------------------------- */
   export function getUsers(
     query: {

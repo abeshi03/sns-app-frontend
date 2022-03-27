@@ -2,10 +2,11 @@
 import React, { VFC, memo, ReactNode, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------ */
 import { currentUserState } from "../../../store/auth/currentUserState";
+import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./SideBar.module.scss";
@@ -13,6 +14,9 @@ import { HomeIcon } from "../../../../styles/icons/HomeIcon";
 
 /* --- ルーティング ---------------------------------------------------------------------------------------------------- */
 import { pagesPath } from "../../../lib/$path";
+
+/* --- Api ---------------------------------------------------------------------------------------------------------- */
+import { AuthApi } from "../../../apis/AuthApis";
 
 /* --- 型定義 -------------------------------------------------------------------------------------------------------- */
 import { UrlObject } from "url";
@@ -41,7 +45,40 @@ export const SideBar: VFC<Props> = memo((props) => {
 
   const [ menuOpen, setMenuOpen ] = useState(true);
   const currentUser = useRecoilValue(currentUserState).currentUser;
+  const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
+  const setCurrentUserState = useSetRecoilState(currentUserState);
   const router = useRouter();
+
+
+  const signOut = async (): Promise<void> => {
+    try {
+
+      await AuthApi.signOut();
+
+      setCurrentUserState({
+        currentUser: null
+      });
+
+      await router.replace(pagesPath.sign_in.$url());
+
+      setFloatingNotificationBar({
+        notification: {
+          type: "SUCCESS",
+          message: "ログアウトしました"
+        }
+      });
+
+    } catch (error: unknown) {
+
+      console.error(error);
+      setFloatingNotificationBar({
+        notification: {
+          type: "ERROR",
+          message: "ログアウトに失敗いたしました"
+        }
+      });
+    }
+  }
 
   const navigations: Navigation[] = [
     {
@@ -73,7 +110,7 @@ export const SideBar: VFC<Props> = memo((props) => {
       path: {},
       icon: <HomeIcon className={styles.icon}/>,
       isDisplay: isNotNull(currentUser),
-      onClickFunction: () => {}
+      onClickFunction: signOut
     },
   ];
 

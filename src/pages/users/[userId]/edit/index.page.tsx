@@ -6,7 +6,7 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { floatingNotificationBarState } from "../../../../store/floatingNotificationBar/floatingNotificationBarState";
-import { currentUserState } from "../../../../store/auth/currentUserState";
+import { currentUserState } from "../../../../store/auth/authState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./userEditPage.module.scss";

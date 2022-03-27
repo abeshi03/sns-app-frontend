@@ -7,7 +7,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { pagesPath } from "../../lib/$path";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
-import { currentUserState } from "../../store/auth/currentUserState";
+import { currentUserState } from "../../store/auth/authState";
 import { floatingNotificationBarState } from "../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */

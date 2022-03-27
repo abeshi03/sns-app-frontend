@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------ */
-import { currentUserState } from "../../../store/auth/currentUserState";
+import { currentUserState } from "../../../store/auth/authState";
 import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */

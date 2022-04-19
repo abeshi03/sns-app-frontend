@@ -28,5 +28,3 @@ export namespace AuthApi {
     await axios.post(Endpoint.signOut);
   }
 }
-
-

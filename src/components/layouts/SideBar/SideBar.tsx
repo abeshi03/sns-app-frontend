@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------ */
-import { currentUserState } from "../../../store/auth/currentUserState";
+import { currentUserState } from "../../../store/auth/authState";
 import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -143,14 +143,14 @@ export const SideBar: VFC<Props> = memo((props) => {
               </Link>
             }
             {navigation.isDisplay && navigation.onClickFunction &&
-              <p
+              <div
                 className={styles.flexContainer}
                 role="navigation"
                 onClick={navigation.onClickFunction}
               >
                 { navigation.icon }
                 { menuOpen && <p className={styles.pageName}>{ navigation.pageName }</p> }
-              </p>
+              </div>
             }
           </React.Fragment>
         ))}

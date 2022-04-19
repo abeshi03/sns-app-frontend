@@ -14,7 +14,7 @@ import { pagesPath } from "../../../lib/$path";
 import { Button } from "../../../components/atoms/Button/Button";
 
 
-const userDetailsPage = () => {
+const UserDetailsPage = () => {
 
   const { user, userError, userLoading } = useUser();
 
@@ -42,4 +42,4 @@ const userDetailsPage = () => {
 }
 
 
-export default userDetailsPage;
+export default UserDetailsPage;

@@ -1,11 +1,12 @@
 /* --- ライブラリー、フレームワーク --------------------------------------------------------------------------------------- */
-import React, {useCallback, VFC} from "react";
+import React, { useCallback, VFC, useEffect } from "react";
 import { useRouter } from "next/router";
 import { SubmitHandler } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { floatingNotificationBarState } from "../../../../store/floatingNotificationBar/floatingNotificationBarState";
+import { currentUserState } from "../../../../store/auth/authState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./userEditPage.module.scss";
@@ -26,13 +27,15 @@ import { UserInputValues } from "../../../../type/User";
 /* --- api ----------------------------------------------------------------------------------------------------------- */
 import { deleteUser, updateUser } from "../../../../apis/UsersApi";
 
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { isNull } from "../../../../utility/typeGuard/isNull";
 
 
-
-const userEditPage: VFC = () => {
+const UserEditPage: VFC = () => {
 
   const { user, userLoading, userError } = useUser();
   const setFloatingNotificationBar = useSetRecoilState(floatingNotificationBarState);
+  const currentUser = useRecoilValue(currentUserState).currentUser;
   const router = useRouter();
 
   const deleteUserData = async (): Promise<void> => {
@@ -107,6 +110,22 @@ const userEditPage: VFC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (isNull(currentUser)) {
+      router.push({
+        pathname: pagesPath.sign_in.$url().pathname,
+        query: { nextPagePath: `/users/${user?.id}/edit` }
+      }).then(() => {
+        setFloatingNotificationBar({
+          notification: {
+            type: "WARNING",
+            message: "ログインしてください"
+          }
+        });
+      });
+    }
+  }, [])
+
   return (
     <div className={styles.userEditPage}>
       <h1>ユーザー編集</h1>
@@ -126,5 +145,5 @@ const userEditPage: VFC = () => {
   )
 }
 
-export default userEditPage;
+export default UserEditPage;
 

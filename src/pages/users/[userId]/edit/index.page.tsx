@@ -112,8 +112,9 @@ const UserEditPage: VFC = () => {
 
   useEffect(() => {
     if (isNull(currentUser)) {
-      router.push(pagesPath.sign_in.$url(), {
-        pathname: `/users/${user?.id}/edit`
+      router.push({
+        pathname: pagesPath.sign_in.$url().pathname,
+        query: { nextPagePath: `/users/${user?.id}/edit` }
       }).then(() => {
         setFloatingNotificationBar({
           notification: {

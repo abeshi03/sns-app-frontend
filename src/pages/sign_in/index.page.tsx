@@ -55,10 +55,10 @@ const SignInPage: NextPage = () => {
         currentUser: userResponse
       });
 
-      if (router.asPath === "/sign_in") {
-        await router.push(pagesPath.$url());
+      if (router.query.nextPagePath) {
+        await router.push(decodeURIComponent(router.query.nextPagePath as string));
       } else {
-        await router.push(router.asPath);
+        await router.push(pagesPath.$url());
       }
 
       setFloatingNotificationBar({
@@ -82,7 +82,6 @@ const SignInPage: NextPage = () => {
 
 
   useEffect(() => {
-    console.log(router);
     if (isNotNull(currentUser)) {
       router.replace(pagesPath.$url()).then(() => {
         setFloatingNotificationBar({

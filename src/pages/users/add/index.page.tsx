@@ -6,7 +6,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 /* --- グローバルstate ------------------------------------------------------------------------------------------------- */
 import { floatingNotificationBarState } from "../../../store/floatingNotificationBar/floatingNotificationBarState";
-import { currentUserState, isLoginState } from "../../../store/auth/authState";
+import { currentUserState } from "../../../store/auth/authState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserAddPage.module.scss";
@@ -69,8 +69,9 @@ const UserAddPage: VFC = () => {
 
   useEffect(() => {
     if (isNull(currentUser)) {
-      router.push(pagesPath.sign_in.$url(), {
-        pathname: pagesPath.users.add.$url().pathname
+      router.push({
+        pathname: pagesPath.sign_in.$url().pathname,
+        query: { nextPagePath: pagesPath.users.add.$url().pathname }
       }).then(() => {
         setFloatingNotificationBar({
           notification: {
@@ -78,7 +79,7 @@ const UserAddPage: VFC = () => {
             message: "ログインしてください"
           }
         })
-      });
+      })
     }
   }, []);
 

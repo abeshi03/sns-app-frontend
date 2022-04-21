@@ -69,4 +69,11 @@ export namespace Endpoint {
       `&limit=${query.limit}` +
       `&searchByPostContent=${query.searchByPostContent}`;
   }
+
+  /* --- 投稿取得 ----------------------------------------------------------------------------------------------------- */
+  export function getPost(
+    { postId }: { postId: number }
+  ): string {
+    return `${BASE_URL}/posts/${postId}`;
+  }
 }

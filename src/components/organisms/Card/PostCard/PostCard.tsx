@@ -51,7 +51,6 @@ export const PostCard: VFC<Props> = memo((props) => {
           </div>
         }
       </div>
-
     </div>
   );
 });

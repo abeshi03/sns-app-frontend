@@ -4,6 +4,11 @@ export const pagesPath = {
   csv_demo: {
     $url: (url?: { hash?: string }) => ({ pathname: '/csv-demo' as const, hash: url?.hash })
   },
+  posts: {
+    _postId: (postId: string | number) => ({
+      $url: (url?: { hash?: string }) => ({ pathname: '/posts/[postId]' as const, query: { postId }, hash: url?.hash })
+    })
+  },
   sign_in: {
     $url: (url?: { hash?: string }) => ({ pathname: '/sign_in' as const, hash: url?.hash })
   },

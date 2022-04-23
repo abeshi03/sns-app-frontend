@@ -33,7 +33,11 @@ const PostDetailsPage: NextPage = () => {
       {isPostLoading && <p>ローディング</p>}
       {isPostError && <p>エラーです</p>}
       {post &&
-        <PostCard targetPostData={post}/>
+        <>
+          <PostCard targetPostData={post}/>
+          <div className={styles.commentBlock}>
+          </div>
+        </>
       }
     </div>
   );

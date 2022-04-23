@@ -7,10 +7,13 @@ import noImage from "../../../../../public/images/user-profile.png"
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../../type/Post";
+import {useRouter} from "next/router";
+import {pagesPath} from "../../../../lib/$path";
 
 type Props = {
   className?: string;
   targetPostData: Post;
+  isClick?: boolean;
 }
 
 const formattedPostedDate = (postedDate: string) => {
@@ -24,9 +27,22 @@ const formattedPostedDate = (postedDate: string) => {
 
 
 export const PostCard: VFC<Props> = memo((props) => {
-  const { targetPostData, className } = props;
+
+  const { targetPostData, className, isClick = false } = props;
+
+  const router = useRouter();
+
+  const goToPostDetailsPage = async () => {
+    if (!isClick) return;
+    await router.push(pagesPath.posts._postId(targetPostData.id).$url());
+  }
+
   return (
-    <div className={`${styles.postCard} ${className}`}>
+    <div
+      className={`${styles.postCard} ${className}`}
+      onClick={goToPostDetailsPage }
+      style={{ cursor: isClick ? "pointer" : "" }}
+    >
       <div className={styles.imageBlock}>
         <div
           className={styles.userAvatar}

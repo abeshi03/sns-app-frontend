@@ -13,6 +13,9 @@ import { getPostFetcher } from "../../../apis/PostsApi";
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../type/Post";
 
+/* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
+import {PostCard} from "../../../components/organisms/Card/PostCard/PostCard";
+
 
 const PostDetailsPage: NextPage = () => {
 
@@ -29,7 +32,9 @@ const PostDetailsPage: NextPage = () => {
     <div className={styles.postDetailsPage}>
       {isPostLoading && <p>ローディング</p>}
       {isPostError && <p>エラーです</p>}
-      {post && <p>{ post.content }</p>}
+      {post &&
+        <PostCard targetPostData={post}/>
+      }
     </div>
   );
 }

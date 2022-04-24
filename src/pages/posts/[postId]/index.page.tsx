@@ -1,8 +1,8 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
 import useSWR from "swr";
-import { useState } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./postDetailsPage.module.scss"
@@ -19,6 +19,7 @@ import { CommentsResponse } from "../../../type/response/CommentsResponse";
 /* --- 子コンポーネント ------------------------------------------------------------------------------------------------- */
 import { PostCard } from "../../../components/organisms/Card/PostCard/PostCard";
 import { CommentCard } from "./CommentCard";
+import { Pagination } from "../../../components/molecules/Pagination/Pagination";
 
 
 const PostDetailsPage: NextPage = () => {
@@ -34,7 +35,7 @@ const PostDetailsPage: NextPage = () => {
 
   /* --- コメント一覧取得 ----------------------------------------------------------------------------------------------- */
   const [ pageNumber, setPageNumber ] = useState(1);
-  const LIMIT: number = 15;
+  const LIMIT: number = 1;
   const { data, error: commentError } =
     useSWR<CommentsResponse>(postId ? Endpoint.getComments({
       pageNumber,
@@ -43,6 +44,11 @@ const PostDetailsPage: NextPage = () => {
     }) : null, getCommentsFetcher);
   const isCommentLoading = !data && !commentError;
   const isCommentError = commentError;
+  const noComments = data && data.totalItemsCount === 0
+
+  const onChangePageComment = useCallback((newPageNumber: number): void => {
+    setPageNumber(newPageNumber);
+  }, []);
 
   /* --- view -------------------------------------------------------------------------------------------------------- */
   return (
@@ -55,12 +61,22 @@ const PostDetailsPage: NextPage = () => {
           <div className={styles.commentBlock}>
             {isCommentLoading && <p>Loading...</p>}
             {isCommentError && <p>コメントの取得に失敗しました</p>}
+            {noComments && <p>コメントは現在投稿されておりません</p>}
             {data &&
-              <div className={styles.commentCardsFlow}>
-                {data.comments.map((comment) => (
-                  <CommentCard key={comment.id} comment={comment}/>
-                ))}
-              </div>
+              <>
+                <div className={styles.commentCardsFlow}>
+                  {data.comments.map((comment) => (
+                    <CommentCard key={comment.id} comment={comment}/>
+                  ))}
+                </div>
+                <Pagination
+                  className={styles.pagination}
+                  totalCount={data.totalItemsCount}
+                  currentPageNumber={pageNumber}
+                  perPageNumber={LIMIT}
+                  onChangePage={onChangePageComment}
+                />
+              </>
             }
           </div>
 

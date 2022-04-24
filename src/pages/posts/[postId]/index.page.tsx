@@ -3,6 +3,10 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useCallback, useRef, useState } from "react";
 import useSWR from "swr";
+import { useRecoilValue } from "recoil";
+
+/* --- globalState --------------------------------------------------------------------------------------------------- */
+import { currentUserState } from "../../../store/auth/authState";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./postDetailsPage.module.scss"
@@ -21,9 +25,14 @@ import { PostCard } from "../../../components/organisms/Card/PostCard/PostCard";
 import { CommentCard } from "./CommentCard";
 import { Pagination } from "../../../components/molecules/Pagination/Pagination";
 
+/* --- 補助関数 ------------------------------------------------------------------------------------------------------- */
+import { isNotNull } from "../../../utility/typeGuard/isNotNull";
+
 
 const PostDetailsPage: NextPage = () => {
 
+  const currentUser = useRecoilValue(currentUserState).currentUser;
+  const isLogin: boolean = isNotNull(currentUser);
   const router = useRouter();
   const { postId } = router.query;
 
@@ -64,6 +73,7 @@ const PostDetailsPage: NextPage = () => {
           <PostCard targetPostData={post}/>
           <div className={styles.commentBlock} ref={paginationScrollPoint}>
             <h2 className={styles.heading}>コメント</h2>
+            {isLogin && <p className={styles.addCommentLink}>コメントを投稿する</p>}
             {isCommentLoading && <p>Loading...</p>}
             {isCommentError && <p>コメントの取得に失敗しました</p>}
             {isNoComments && <p>コメントは現在投稿されておりません</p>}
@@ -92,3 +102,4 @@ const PostDetailsPage: NextPage = () => {
 }
 
 export default PostDetailsPage;
+

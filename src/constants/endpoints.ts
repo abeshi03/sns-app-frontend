@@ -89,4 +89,6 @@ export namespace Endpoint {
       `pageNumber=${query.pageNumber}` +
       `&limit=${query.limit}`
   }
+
+  export const createComment = `${BASE_URL}/post-comments`;
 }

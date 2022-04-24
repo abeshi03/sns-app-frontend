@@ -52,7 +52,7 @@ const PostDetailsPage: NextPage = () => {
   const [ pageNumber, setPageNumber ] = useState(1);
   const LIMIT: number = 7;
 
-  const { data, error: commentError, mutate } =
+  const { data, error: commentError, mutate: commentMutate } =
     useSWR<CommentsResponse>(postId ? Endpoint.getComments({
       pageNumber,
       limit: LIMIT,
@@ -85,8 +85,10 @@ const PostDetailsPage: NextPage = () => {
       throw new Error("ログインしていない場合投稿できません")
     }
 
+    let newCommentId!: number;
+
     try {
-      await createPostComment({
+      newCommentId = await createPostComment({
         id: post!.id,
         text: inputValue.text
       });
@@ -116,10 +118,21 @@ const PostDetailsPage: NextPage = () => {
       throw new Error("dataがなければ基本的にここまで辿りつけないはず")
     }
 
-    await mutate({
-      comments: data.comments,
-      totalItemsCount: data.totalItemsCount
-    });
+    const newCommentData: Comment = {
+      id: newCommentId,
+      text: inputValue.text,
+      commentedUserData: {
+        id: currentUser.id,
+        name: currentUser.name,
+        avatarUri: currentUser.avatarUri
+      },
+      commentedDateTime: new Date().toISOString()
+    };
+
+    await commentMutate({
+      comments: [ newCommentData, ...data.comments ],
+      totalItemsCount: data.totalItemsCount + 1
+    }, false);
 
   }, [ currentUser, data, pageNumber ]);
 

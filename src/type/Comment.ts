@@ -6,3 +6,7 @@ export type Comment = {
   commentedUserData: Pick<User, "id" | "name" | "avatarUri">;
   commentedDateTime: string;
 }
+
+export type CommentInputValue = {
+  text: string;
+}

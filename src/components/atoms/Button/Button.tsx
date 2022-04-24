@@ -9,6 +9,7 @@ import styles from "./button.module.scss";
 import { UrlObject } from "url";
 
 type Props = {
+  className?: string;
   color: "SKY_BLUE" | "WHITE";
   size: "SMALL" | "BIG";
   path: string | UrlObject;
@@ -20,7 +21,7 @@ type Props = {
 
 
 export const Button: VFC<Props> = memo((props) => {
-  const { color, path, children, size, style, onClick, type } = props;
+  const { className, color, path, children, size, style, onClick, type } = props;
 
   const ButtonColorModifierCSS_Class = (): string => {
     switch (color) {
@@ -42,7 +43,7 @@ export const Button: VFC<Props> = memo((props) => {
       {type ? (
         <button
           onClick={onClick}
-          className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button}`}
+          className={`${ButtonColorModifierCSS_Class()} ${ButtonSizeModifierCSS_Class()} ${styles.button} ${className}`}
           type={type}
         >
           { children }

@@ -1,7 +1,7 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import useSWR from "swr";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -35,19 +35,23 @@ const PostDetailsPage: NextPage = () => {
 
   /* --- コメント一覧取得 ----------------------------------------------------------------------------------------------- */
   const [ pageNumber, setPageNumber ] = useState(1);
-  const LIMIT: number = 1;
+  const LIMIT: number = 7;
+
   const { data, error: commentError } =
     useSWR<CommentsResponse>(postId ? Endpoint.getComments({
       pageNumber,
       limit: LIMIT,
       postId: Number(postId)
     }) : null, getCommentsFetcher);
+
   const isCommentLoading = !data && !commentError;
   const isCommentError = commentError;
-  const noComments = data && data.totalItemsCount === 0
+  const isNoComments = data && data.totalItemsCount === 0
 
-  const onChangePageComment = useCallback((newPageNumber: number): void => {
-    setPageNumber(newPageNumber);
+  const paginationScrollPoint = useRef<HTMLDivElement>(null) as React.MutableRefObject<HTMLDivElement>;
+  const onChangePageComment = useCallback((pageNumber: number): void => {
+    setPageNumber(pageNumber);
+    paginationScrollPoint.current.scrollIntoView();
   }, []);
 
   /* --- view -------------------------------------------------------------------------------------------------------- */
@@ -58,10 +62,11 @@ const PostDetailsPage: NextPage = () => {
       {post &&
         <>
           <PostCard targetPostData={post}/>
-          <div className={styles.commentBlock}>
+          <div className={styles.commentBlock} ref={paginationScrollPoint}>
+            <h2 className={styles.heading}>コメント</h2>
             {isCommentLoading && <p>Loading...</p>}
             {isCommentError && <p>コメントの取得に失敗しました</p>}
-            {noComments && <p>コメントは現在投稿されておりません</p>}
+            {isNoComments && <p>コメントは現在投稿されておりません</p>}
             {data &&
               <>
                 <div className={styles.commentCardsFlow}>

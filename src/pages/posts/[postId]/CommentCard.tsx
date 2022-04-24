@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import { VFC } from "react";
+import { memo, VFC } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./postDetailsPage.module.scss";
@@ -12,7 +12,7 @@ type Props = {
   comment: Comment;
 }
 
-export const CommentCard: VFC<Props> = (props) => {
+export const CommentCard: VFC<Props> = memo((props) => {
 
   const { comment } = props;
 
@@ -33,4 +33,4 @@ export const CommentCard: VFC<Props> = (props) => {
 
     </div>
   )
-}
+});

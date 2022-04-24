@@ -15,8 +15,8 @@ export async function getCommentsFetcher(endPoint: string): Promise<CommentsResp
   return (response.data).data;
 }
 
-export async function createComment(createCommentData: Pick<Comment, "text">): Promise<number> {
-  const response: ApiResponse<{ id: number }> = await axios.post(Endpoint.createComment, {
+export async function createPostComment(createCommentData: Pick<Comment, "text" | "id">): Promise<number> {
+  const response: ApiResponse<{ id: number }> = await axios.post(Endpoint.createComment(createCommentData.id), {
     text: createCommentData.text
   });
 

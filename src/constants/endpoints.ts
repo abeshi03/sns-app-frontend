@@ -90,5 +90,9 @@ export namespace Endpoint {
       `&limit=${query.limit}`
   }
 
-  export const createComment = `${BASE_URL}/post-comments`;
+  export function createComment(
+    postId: number
+  ): string {
+    return `${BASE_URL}/post-comments/${postId}`;
+  }
 }

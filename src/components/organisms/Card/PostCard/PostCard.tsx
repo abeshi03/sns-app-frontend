@@ -1,14 +1,16 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { memo, VFC } from "react";
+import { useRouter } from "next/router";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./PostCard.module.scss";
 import noImage from "../../../../../public/images/user-profile.png"
 
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../../../../lib/$path";
+
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../../type/Post";
-import {useRouter} from "next/router";
-import {pagesPath} from "../../../../lib/$path";
 
 type Props = {
   className?: string;

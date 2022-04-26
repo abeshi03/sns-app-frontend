@@ -9,12 +9,26 @@ import { PostsResponse } from "../type/response/PostsResponse";
 
 export async function getPostsFetcher(endPoint: string): Promise<Post[]> {
 
-  const responseData: ApiResponse<PostsResponse> = await axios.get(endPoint);
-  return (responseData.data).data.posts;
+  try {
+
+    const responseData: ApiResponse<PostsResponse> = await axios.get(endPoint);
+    return (responseData.data).data.posts;
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function getPostFetcher(endPoint: string): Promise<Post> {
 
-  const responseData: ApiResponse<Post> = await axios.get(endPoint);
-  return (responseData.data).data;
+  try {
+
+    const responseData: ApiResponse<Post> = await axios.get(endPoint);
+    return (responseData.data).data;
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw error;
+  }
 }

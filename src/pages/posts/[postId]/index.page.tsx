@@ -52,12 +52,13 @@ const PostDetailsPage: NextPage = () => {
   const [ pageNumber, setPageNumber ] = useState(1);
   const LIMIT: number = 7;
 
-  const { data, error: commentError, mutate: commentMutate } =
-    useSWR<CommentsResponse>(postId ? Endpoint.getComments({
+  const url = postId ? Endpoint.getComments({
       pageNumber,
       limit: LIMIT,
       postId: Number(postId)
-    }) : null, getCommentsFetcher);
+    }) : null;
+
+  const { data, error: commentError, mutate: commentMutate } = useSWR<CommentsResponse>(url, getCommentsFetcher);
 
   const isCommentLoading = !data && !commentError;
   const isCommentError = commentError;
@@ -73,7 +74,7 @@ const PostDetailsPage: NextPage = () => {
   const [ isModalOpen, setIsModalOpen ] = useState(false);
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  }, [ isModalOpen ]);
+  }, []);
   const onCLickOpenModal = () => {
     setIsModalOpen(true);
   }
@@ -108,6 +109,8 @@ const PostDetailsPage: NextPage = () => {
           message: "コメントの投稿に失敗しました。"
         }
       });
+
+      return;
     }
 
     if (pageNumber !== 1) {

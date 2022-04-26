@@ -85,7 +85,11 @@ export default function App() {
 
       <div className={styles.postCardsFlow}>
         {postList.map((post, index) => (
-          <PostCard targetPostData={post} key={index}/>
+          <PostCard
+            targetPostData={post}
+            key={index}
+            isClick={true}
+          />
         ))}
       </div>
 

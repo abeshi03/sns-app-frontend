@@ -69,4 +69,30 @@ export namespace Endpoint {
       `&limit=${query.limit}` +
       `&searchByPostContent=${query.searchByPostContent}`;
   }
+
+  /* --- 投稿取得 ----------------------------------------------------------------------------------------------------- */
+  export function getPost(
+    { postId }: { postId: number }
+  ): string {
+    return `${BASE_URL}/posts/${postId}`;
+  }
+
+  /* --- コメント一覧取得 ----------------------------------------------------------------------------------------------- */
+  export function getComments(
+    query: {
+      pageNumber: number;
+      limit: number;
+      postId: number;
+    }
+  ): string {
+    return `${BASE_URL}/post-comments/${query.postId}?` +
+      `pageNumber=${query.pageNumber}` +
+      `&limit=${query.limit}`
+  }
+
+  export function createComment(
+    postId: number
+  ): string {
+    return `${BASE_URL}/post-comments/${postId}`;
+  }
 }

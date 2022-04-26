@@ -1,5 +1,5 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import React, {ChangeEvent, memo, VFC} from "react";
+import React, { memo, VFC } from "react";
 import { UnpackNestedValue, useForm } from "react-hook-form";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
@@ -27,7 +27,6 @@ type Props = {
 }
 
 
-/* eslint-disable-next-line react/display-name */
 export const UserControlGroup: VFC<Props> = memo((props) => {
 
   const { existingUserInfo, submitFunction, submitButtonName } = props;

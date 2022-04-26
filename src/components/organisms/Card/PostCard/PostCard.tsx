@@ -1,9 +1,13 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { memo, VFC } from "react";
+import { useRouter } from "next/router";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./PostCard.module.scss";
 import noImage from "../../../../../public/images/user-profile.png"
+
+/* --- ルーティング ---------------------------------------------------------------------------------------------------- */
+import { pagesPath } from "../../../../lib/$path";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../../type/Post";
@@ -11,6 +15,7 @@ import { Post } from "../../../../type/Post";
 type Props = {
   className?: string;
   targetPostData: Post;
+  isClick?: boolean;
 }
 
 const formattedPostedDate = (postedDate: string) => {
@@ -24,9 +29,22 @@ const formattedPostedDate = (postedDate: string) => {
 
 
 export const PostCard: VFC<Props> = memo((props) => {
-  const { targetPostData, className } = props;
+
+  const { targetPostData, className, isClick = false } = props;
+
+  const router = useRouter();
+
+  const goToPostDetailsPage = async () => {
+    if (!isClick) return;
+    await router.push(pagesPath.posts._postId(targetPostData.id).$url());
+  }
+
   return (
-    <div className={`${styles.postCard} ${className}`}>
+    <div
+      className={`${styles.postCard} ${className}`}
+      onClick={goToPostDetailsPage }
+      style={{ cursor: isClick ? "pointer" : "" }}
+    >
       <div className={styles.imageBlock}>
         <div
           className={styles.userAvatar}
@@ -51,7 +69,6 @@ export const PostCard: VFC<Props> = memo((props) => {
           </div>
         }
       </div>
-
     </div>
   );
 });

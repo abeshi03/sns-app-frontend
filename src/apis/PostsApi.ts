@@ -12,12 +12,23 @@ export async function getPostsFetcher(endPoint: string): Promise<Post[]> {
   try {
 
     const responseData: ApiResponse<PostsResponse> = await axios.get(endPoint);
-
     return (responseData.data).data.posts;
+  } catch (error: unknown) {
 
-   } catch (error: unknown) {
+    console.log(error);
+    throw error;
+  }
+}
 
-    console.error(error);
-    throw new Error("API ERROR: getPosts");
+export async function getPostFetcher(endPoint: string): Promise<Post> {
+
+  try {
+
+    const responseData: ApiResponse<Post> = await axios.get(endPoint);
+    return (responseData.data).data;
+  } catch (error: unknown) {
+
+    console.log(error);
+    throw error;
   }
 }

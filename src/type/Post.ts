@@ -8,6 +8,6 @@ export type Post = {
   postedDateTime: string;
   like: {
     isPostToLikeByCurrentUser: boolean;
-    totalCount: boolean;
+    totalCount: number;
   }
 }

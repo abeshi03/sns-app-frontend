@@ -95,4 +95,13 @@ export namespace Endpoint {
   ): string {
     return `${BASE_URL}/post-comments/${postId}`;
   }
+
+  /* --- イイネ関連 --------------------------------------------------------------------------------------------------- */
+  export function addLike(postId: number): string {
+    return `${BASE_URL}/posts/${postId}/like`;
+  }
+
+  export function removeLike(postId: number): string {
+    return `${BASE_URL}/posts/${postId}/like`;
+  }
 }

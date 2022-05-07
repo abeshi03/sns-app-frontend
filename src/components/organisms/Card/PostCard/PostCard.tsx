@@ -68,6 +68,11 @@ export const PostCard: VFC<Props> = memo((props) => {
           >
           </div>
         }
+        {targetPostData.like.isPostToLikeByCurrentUser ? (
+          <p className={styles.likesCount}>いいね！❤️{ targetPostData.like.totalCount }</p>
+        ) : (
+          <p className={styles.likesCount}>いいね！♡{ targetPostData.like.totalCount }</p>
+        )}
       </div>
     </div>
   );

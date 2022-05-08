@@ -142,7 +142,7 @@ const PostDetailsPage: NextPage = () => {
 
 
   /* --- イイネ関連 ---------------------------------------------------------------------------------------------------- */
-  const addLike = async (): Promise<void> => {
+  const addLike = useCallback(async (): Promise<void> => {
 
     if (!isLogin) {
       setFloatingNotificationBarState({
@@ -174,9 +174,9 @@ const PostDetailsPage: NextPage = () => {
         }
       });
     }
-  }
+  }, [ post, isLogin ])
 
-  const removeLike = async (): Promise<void> => {
+  const removeLike = useCallback(async (): Promise<void> => {
 
     if (!isLogin) {
       setFloatingNotificationBarState({
@@ -208,7 +208,7 @@ const PostDetailsPage: NextPage = () => {
         }
       });
     }
-  }
+  }, [ post, isLogin ])
 
   /* --- view -------------------------------------------------------------------------------------------------------- */
   return (

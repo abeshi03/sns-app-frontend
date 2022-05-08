@@ -16,6 +16,8 @@ type Props = {
   className?: string;
   targetPostData: Post;
   isClick?: boolean;
+  addLike: () => Promise<void>;
+  removeLike: () => Promise<void>;
 }
 
 const formattedPostedDate = (postedDate: string) => {
@@ -30,8 +32,7 @@ const formattedPostedDate = (postedDate: string) => {
 
 export const PostCard: VFC<Props> = memo((props) => {
 
-  const { targetPostData, className, isClick = false } = props;
-
+  const { targetPostData, className, isClick = false, addLike, removeLike } = props;
   const router = useRouter();
 
   const goToPostDetailsPage = async () => {
@@ -69,9 +70,9 @@ export const PostCard: VFC<Props> = memo((props) => {
           </div>
         }
         {targetPostData.like.isPostToLikeByCurrentUser ? (
-          <p className={styles.likesCount}>いいね！❤️{ targetPostData.like.totalCount }</p>
+          <p onClick={removeLike} className={styles.likesCount}>いいね！❤️{ targetPostData.like.totalCount }</p>
         ) : (
-          <p className={styles.likesCount}>いいね！♡{ targetPostData.like.totalCount }</p>
+          <p onClick={addLike} className={styles.likesCount}>いいね！♡{ targetPostData.like.totalCount }</p>
         )}
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { UserRole } from "../type/User";
+
 export const BASE_URL = "http://localhost:5000";
 
 export namespace Endpoint {
@@ -13,22 +15,36 @@ export namespace Endpoint {
       paginationPageNumber: number;
       itemsCountPerPaginationPage: number;
       searchByUserName?: string | null;
+      role?: UserRole;
     }
   ): string {
 
-    if (!query.searchByUserName) {
+    if (!query.searchByUserName && !query.role) {
 
       return `${BASE_URL}/users?` +
         `paginationPageNumber=${query.paginationPageNumber}` +
         `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}`
-    } else {
-
-      return `${BASE_URL}/users?` +
-      `paginationPageNumber=${query.paginationPageNumber}` +
-      `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}` +
-      `&searchByUserName=${query.searchByUserName}`
     }
 
+    if (query.searchByUserName && !query.role) {
+      return `${BASE_URL}/users?` +
+        `paginationPageNumber=${query.paginationPageNumber}` +
+        `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}` +
+        `&searchByUserName=${query.searchByUserName}`;
+    }
+
+    if (!query.searchByUserName && query.role) {
+      return `${BASE_URL}/users?` +
+        `paginationPageNumber=${query.paginationPageNumber}` +
+        `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}` +
+        `&role=${query.role}`;
+    }
+
+    return `${BASE_URL}/users?` +
+      `paginationPageNumber=${query.paginationPageNumber}` +
+      `&itemsCountPerPaginationPage=${query.itemsCountPerPaginationPage}` +
+      `&searchByUserName=${query.searchByUserName}` +
+      `&role=${query.role}`;
   }
 
 

@@ -83,6 +83,7 @@ const UsersListPage: VFC = () => {
     }));
 
   const onChangeFilteringRole = (select: SingleValue<SelectField.Option<UserRole>>): void => {
+    setPaginationPageNumber(1);
     setFilteringRole(select?.value);
   }
 

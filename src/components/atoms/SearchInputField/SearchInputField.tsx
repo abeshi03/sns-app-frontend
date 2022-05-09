@@ -19,9 +19,10 @@ export const SearchInputField: VFC<Props> = memo((props) => {
 
   const { onSearchFunction } = props;
 
-  const { register, handleSubmit } = useForm<Input>();
+  const { register, handleSubmit, reset } = useForm<Input>();
   const onSearch: SubmitHandler<Input> = data => {
     onSearchFunction(data.searchWard);
+    reset();
   }
 
   return (

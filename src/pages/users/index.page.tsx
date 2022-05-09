@@ -1,15 +1,19 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
-import { useCallback, useState, VFC } from "react";
+import React, { useCallback, useState, VFC } from "react";
 import useSWR from 'swr'
+import Select, { SingleValue } from "react-select";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./usersListPage.module.scss";
+import { formatterStrings } from "../../config/formatterStrings";
 
 /* --- フェッチャー ---------------------------------------------------------------------------------------------------- */
 import { getUsersFetcher } from "../../apis/UsersApi";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { UsersResponseType } from "../../type/response/UsersResponse";
+import { USER_ROLE, UserRole } from "../../type/User";
+import { SelectField } from "../../lib/ReactSelect";
 
 /* --- エンドポイント -------------------------------------------------------------------------------------------------- */
 import { Endpoint } from "../../constants/endpoints";
@@ -30,6 +34,7 @@ const UsersListPage: VFC = () => {
   /* --- state ------------------------------------------------------------------------------------------------------- */
   const [ paginationPageNumber, setPaginationPageNumber ] = useState(1);
   const [ searchWard, setSearchWard ] = useState<string>("");
+  const [ filteringRole, setFilteringRole ] = useState<UserRole | undefined>(undefined);
   const PER_PAGE_NUMBER: number = 15;
 
 
@@ -37,7 +42,8 @@ const UsersListPage: VFC = () => {
   const { data, error } = useSWR<UsersResponseType>(Endpoint.getUsers({
       paginationPageNumber,
       itemsCountPerPaginationPage: PER_PAGE_NUMBER,
-      searchByUserName: searchWard
+      searchByUserName: searchWard,
+      role: filteringRole
     }), getUsersFetcher);
 
   const isLoading = !data && !error;
@@ -65,7 +71,20 @@ const UsersListPage: VFC = () => {
   const resetFiltering = useCallback((): void => {
     setPaginationPageNumber(1);
     setSearchWard("");
+    setFilteringRole(undefined);
   }, []);
+
+
+  /* --- セレクトフィールド --------------------------------------------------------------------------------------------- */
+  const roleOptions: SelectField.Option<UserRole>[] =
+    Object.values(USER_ROLE).map((value) => ({
+      label: formatterStrings.userRole(value),
+      value
+    }));
+
+  const onChangeFilteringRole = (select: SingleValue<SelectField.Option<UserRole>>): void => {
+    setFilteringRole(select?.value);
+  }
 
 
   /* --- ページネーション ----------------------------------------------------------------------------------------------- */
@@ -101,6 +120,11 @@ const UsersListPage: VFC = () => {
     if (data) {
       return (
         <>
+          <Select
+            placeholder="権限で絞り込み"
+            options={roleOptions}
+            onChange={onChangeFilteringRole}
+          />
           <div className={styles.userCardsFlow}>
             {data.users.map((user) => (
               <UserCard key={user.id} targetUser={user}/>

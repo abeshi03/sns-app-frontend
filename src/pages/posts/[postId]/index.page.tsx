@@ -17,7 +17,7 @@ import styles from "./postDetailsPage.module.scss"
 import { Endpoint } from "../../../constants/endpoints";
 import { getPostFetcher } from "../../../apis/PostsApi";
 import { createPostComment, getCommentsFetcher } from "../../../apis/PostCommentApi";
-import { LikeApi } from "../../../apis/PostLikeApi";
+import { postLikeApi } from "../../../apis/PostLikeApi";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../type/Post";
@@ -157,7 +157,7 @@ const PostDetailsPage: NextPage = () => {
     if (!post) return console.log("投稿が取得できていなければいいねができないべき");
 
     try {
-      await LikeApi.add(post.id);
+      await postLikeApi.add(post.id);
       await postMutate({
         ...post,
         like: {
@@ -191,7 +191,7 @@ const PostDetailsPage: NextPage = () => {
     if (!post) return console.log("投稿が取得できていなければいいね削除ができないべき");
 
     try {
-      await LikeApi.remove(post.id);
+      await postLikeApi.remove(post.id);
       await postMutate({
         ...post,
         like: {

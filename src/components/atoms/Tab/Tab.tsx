@@ -4,7 +4,7 @@ import React, { memo, VFC } from "react";
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./Tab.module.scss"
 
-namespace Tabs {
+export namespace Tabs {
   type TabCommonProperties = {
     readonly label: string;
     readonly selected?: boolean;

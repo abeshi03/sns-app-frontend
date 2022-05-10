@@ -6,4 +6,8 @@ export type Post = {
   imageUri?: string;
   postedUserData: User;
   postedDateTime: string;
+  like: {
+    isPostToLikeByCurrentUser: boolean;
+    totalCount: number;
+  }
 }

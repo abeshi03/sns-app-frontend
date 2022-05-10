@@ -17,6 +17,7 @@ import styles from "./postDetailsPage.module.scss"
 import { Endpoint } from "../../../constants/endpoints";
 import { getPostFetcher } from "../../../apis/PostsApi";
 import { createPostComment, getCommentsFetcher } from "../../../apis/PostCommentApi";
+import { postLikeApi } from "../../../apis/PostLikeApi";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
 import { Post } from "../../../type/Post";
@@ -43,7 +44,7 @@ const PostDetailsPage: NextPage = () => {
 
   /* --- 投稿取得 ----------------------------------------------------------------------------------------------------- */
   /* router.queryは初回レンダリングがundefinedのため考慮 */
-  const { data: post, error: PostError } =
+  const { data: post, error: PostError, mutate: postMutate } =
     useSWR<Post>(postId ? Endpoint.getPost({ postId: Number(postId) }) : null, getPostFetcher);
   const isPostLoading = !post && !PostError;
   const isPostError = PostError;
@@ -139,6 +140,76 @@ const PostDetailsPage: NextPage = () => {
 
   }, [ currentUser, data, pageNumber ]);
 
+
+  /* --- イイネ関連 ---------------------------------------------------------------------------------------------------- */
+  const addLike = useCallback(async (): Promise<void> => {
+
+    if (!isLogin) {
+      setFloatingNotificationBarState({
+        notification: {
+          type: "INFO",
+          message: "いいねをするにはログインが必要です"
+        }
+      });
+      return;
+    }
+
+    if (!post) return console.log("投稿が取得できていなければいいねができないべき");
+
+    try {
+      await postLikeApi.add(post.id);
+      await postMutate({
+        ...post,
+        like: {
+          isPostToLikeByCurrentUser: true,
+          totalCount: post.like.totalCount + 1
+        }
+      }, false);
+    } catch (error: unknown) {
+      console.log(error);
+      setFloatingNotificationBarState({
+        notification: {
+          type: "ERROR",
+          message: "いいねに失敗しました"
+        }
+      });
+    }
+  }, [ post, isLogin ])
+
+  const removeLike = useCallback(async (): Promise<void> => {
+
+    if (!isLogin) {
+      setFloatingNotificationBarState({
+        notification: {
+          type: "INFO",
+          message: "いいね削除をするにはログインが必要です"
+        }
+      });
+      return;
+    }
+
+    if (!post) return console.log("投稿が取得できていなければいいね削除ができないべき");
+
+    try {
+      await postLikeApi.remove(post.id);
+      await postMutate({
+        ...post,
+        like: {
+          isPostToLikeByCurrentUser: false,
+          totalCount: post.like.totalCount - 1
+        }
+      }, false);
+    } catch (error: unknown) {
+      console.log(error);
+      setFloatingNotificationBarState({
+        notification: {
+          type: "ERROR",
+          message: "いいね削除に失敗しました"
+        }
+      });
+    }
+  }, [ post, isLogin ])
+
   /* --- view -------------------------------------------------------------------------------------------------------- */
   return (
     <div className={styles.postDetailsPage}>
@@ -147,7 +218,7 @@ const PostDetailsPage: NextPage = () => {
       {isPostError && <p>投稿の取得に失敗しました　</p>}
       {post &&
         <>
-          <PostCard targetPostData={post}/>
+          <PostCard targetPostData={post} addLike={addLike} removeLike={removeLike}/>
           {/* コメント部分 ============================================================================================ */}
           <div className={styles.commentBlock} ref={paginationScrollPoint}>
             <h2 className={styles.heading}>コメント</h2>

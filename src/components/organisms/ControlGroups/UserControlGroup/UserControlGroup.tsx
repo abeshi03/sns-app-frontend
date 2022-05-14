@@ -1,7 +1,7 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { memo, VFC } from "react";
 import { UnpackNestedValue, useForm, Controller } from "react-hook-form";
-import Select, { SingleValue } from "react-select";
+import Select from "react-select";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserControlGroup.module.scss";
@@ -38,7 +38,14 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
 
   const { existingUserInfo, submitFunction, submitButtonName } = props;
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<UserInputValues>();
+  const defaultValues = {
+    name: existingUserInfo?.name,
+    email: existingUserInfo?.email,
+    description: existingUserInfo?.description,
+    role: existingUserInfo?.role,
+  }
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm<UserInputValues>({ defaultValues });
 
   /* --- セレクトフィールド --------------------------------------------------------------------------------------------- */
   const roleOptions: SelectField.Option<UserRole>[] =
@@ -57,14 +64,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
     return null;
   }
 
-  const onChangeSelectRole = (
-    select: SingleValue<SelectField.Option<UserRole>>,
-    onChange: (...event: any[]) => void
-  ) => {
-    console.log(select)
-    onChange(select?.value);
-  }
-
   return (
     <form className={styles.userControlGroup} onSubmit={handleSubmit(submitFunction)}>
       <InputField
@@ -72,7 +71,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="text"
         label="ユーザー名"
         placeholder="ユーザー名を入力してください"
-        defaultValue={ existingUserInfo && existingUserInfo.name}
         required={userValidations.name.required}
         inputProps={register("name", {
           required: userValidations.name.required,
@@ -87,7 +85,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="email"
         label="メールアドレス"
         placeholder="メールアドレスを入力してください"
-        defaultValue={existingUserInfo && existingUserInfo.email}
         required={userValidations.email.required}
         inputProps={register("email", {
           required: userValidations.email.required,
@@ -101,7 +98,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="text"
         label="説明文"
         placeholder="説明文を入力してください"
-        defaultValue={existingUserInfo && existingUserInfo.description}
         required={userValidations.description.required}
         inputProps={register("description", {
           required: userValidations.description.required,
@@ -122,7 +118,7 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
             options={roleOptions}
             onBlur={onBlur}
             ref={ref}
-            onChange={(val) => onChangeSelectRole(val, onChange)}
+            onChange={(newSelect) => onChange(newSelect?.value)}
           />
         )}
       />

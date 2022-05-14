@@ -125,6 +125,7 @@ const UsersListPage: VFC = () => {
             placeholder="権限で絞り込み"
             options={roleOptions}
             onChange={onChangeFilteringRole}
+            isClearable
           />
           <div className={styles.userCardsFlow}>
             {data.users.map((user) => (

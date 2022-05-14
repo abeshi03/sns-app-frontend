@@ -1,11 +1,11 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import type { NextPage } from "next";
 import { Tabs, Tab } from "../../components/atoms/Tabs/Tabs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 const TabSample: NextPage = () => {
 
-  const [ activeTab, setActiveTab ] = useState<string>("タブ1");
+  const [ activeTab, setActiveTab ] = useState("タブ1");
 
   const tabs: Tab[] = [
     {
@@ -25,13 +25,17 @@ const TabSample: NextPage = () => {
     },
   ]
 
+  const onClickTab = useCallback((tab: Tab) => {
+    setActiveTab(tab.key)
+  }, [ activeTab ])
+
 
   return (
     <div>
       <h1>タブ実装のサンプルページ</h1>
       <Tabs
         tabs={tabs}
-        setActiveTab={setActiveTab}
+        onClickTabFunction={onClickTab}
       />
       {activeTab === "タブ1" && <p>タブ1</p>}
       {activeTab === "タブ2" && <p>タブ2</p>}

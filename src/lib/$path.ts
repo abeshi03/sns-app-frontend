@@ -15,6 +15,9 @@ export const pagesPath = {
   tab_sample: {
     $url: (url?: { hash?: string }) => ({ pathname: '/tab-sample' as const, hash: url?.hash })
   },
+  tab_sample2: {
+    $url: (url?: { hash?: string }) => ({ pathname: '/tab-sample2' as const, hash: url?.hash })
+  },
   users: {
     _userId: (userId: string | number) => ({
       edit: {

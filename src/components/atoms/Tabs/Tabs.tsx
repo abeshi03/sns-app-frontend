@@ -1,5 +1,5 @@
 /* --- ライブラリー ---------------------------------------------------------------------------------------------------- */
-import React, {Dispatch, memo, SetStateAction, useEffect, useState, VFC} from "react";
+import React, { Dispatch, memo, SetStateAction, useState, VFC } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./Tabs.module.scss"
@@ -14,7 +14,7 @@ export type Tab = {
 type Props = {
   tabs: Tab[];
   disabled?: boolean;
-  setActiveTab:  Dispatch<SetStateAction<string>>;
+  onClickTabFunction: (tab: Tab) => void
 }
 
 const tabStyles = (isSelected: boolean): string => {
@@ -26,12 +26,12 @@ const tabStyles = (isSelected: boolean): string => {
 
 export const Tabs: VFC<Props> = memo((props) => {
 
-  const { tabs, setActiveTab } = props;
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const { tabs, onClickTabFunction } = props;
+  const [ selectedTabIndex, setSelectedTabIndex ] = useState(0);
 
   const onClickTab = (tab: Tab, indexInArray: number) => {
-    setSelectedTabIndex(indexInArray);
-    setActiveTab(tab.key);
+    setSelectedTabIndex(indexInArray)
+    onClickTabFunction(tab);
   }
 
   return (

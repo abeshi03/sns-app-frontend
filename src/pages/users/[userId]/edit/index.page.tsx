@@ -76,7 +76,6 @@ const UserEditPage: VFC = () => {
   const update: SubmitHandler<UserInputValues> = useCallback(async (inputValue): Promise<void> => {
 
     try {
-
       if (!user) {
         console.log("ユーザーいない、、、")
         return;
@@ -86,6 +85,7 @@ const UserEditPage: VFC = () => {
         id: user.id,
         name: inputValue.name,
         email: inputValue.email,
+        role: inputValue.role,
         description: inputValue.description
       });
 

@@ -43,6 +43,7 @@ const UserAddPage: VFC = () => {
       const userId = await addUser({
         name: inputValue.name,
         email: inputValue.email,
+        role: inputValue.role,
         description: inputValue.description
       });
 
@@ -57,11 +58,10 @@ const UserAddPage: VFC = () => {
 
     } catch (error: unknown) {
 
-      console.log(error, "ユーザーの追加に失敗しました")
       setFloatingNotificationBar({
         notification: {
           type: "ERROR",
-          message: "ユーザーの更新に失敗しました"
+          message: "ユーザーの追加に失敗しました"
         }
       });
     }

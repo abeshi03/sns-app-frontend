@@ -1,20 +1,19 @@
 /* --- ライブラリー ---------------------------------------------------------------------------------------------------- */
-import React, { Dispatch, memo, SetStateAction, useState, VFC } from "react";
+import React, { memo, useState, VFC } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./Tabs.module.scss"
 
 
-export type Tab = {
+export type Tab<T = string> = {
   readonly label: string;
-  key: string;
-  selected?: boolean;
+  key: T;
 }
 
 type Props = {
   tabs: Tab[];
   disabled?: boolean;
-  onClickTabFunction: (tab: Tab) => void
+  onClickTabFunction: (tab: Tab<any>) => void;
 }
 
 const tabStyles = (isSelected: boolean): string => {

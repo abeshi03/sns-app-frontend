@@ -10,18 +10,15 @@ const TabSample: NextPage = () => {
   const tabs: Tab[] = [
     {
       label: "タブ1",
-      key: "タブ1",
-      selected: activeTab === "タブ1"
+      key: "タブ1"
     },
     {
       label: "タブ2",
-      key: "タブ2",
-      selected: activeTab === "タブ2"
+      key: "タブ2"
     },
     {
       label: "タブ3",
-      key: "タブ3",
-      selected: activeTab === "タブ3"
+      key: "タブ3"
     },
   ]
 

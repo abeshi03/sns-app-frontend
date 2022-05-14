@@ -3,7 +3,7 @@
   /* タブが選択activeの時の三角形 */
   $ACTIVE_TAB_MARKS: (
     width: 24px,
-    height: 10px
+    height: 18px
   );
 
   display: flex;
@@ -18,7 +18,7 @@
     justify-content: center;
     align-items: center;
 
-    min-height: 50px;
+    min-height: 40px;
     border-bottom: $BORDER_BOTTOM_WIDTH;
     padding: 8px 10px;
 
@@ -64,7 +64,7 @@
 
         position: absolute;
         left: 50%;
-        top: $BORDER_BOTTOM_WIDTH;
+        top: calc(100% - #{$BORDER_BOTTOM_WIDTH});
         transform: translateX(-50%);
       }
     }

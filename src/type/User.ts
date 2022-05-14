@@ -20,4 +20,5 @@ export type UserInputValues = {
   email: string;
   description: string;
   avatarUri?: FileList | null;
+  role: UserRole;
 }

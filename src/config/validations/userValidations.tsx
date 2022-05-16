@@ -27,6 +27,10 @@ export const userValidations = {
     required: true,
     minLength: 4,
     maxLength: 255
+  },
+
+  role: {
+    required: true
   }
 
   // avatarImage: {
@@ -70,6 +74,12 @@ export const userDescriptionErrorMessage = (error: FieldError) => {
     case "maxLength": return <ErrorMessage
       message={`説明文は最小${userValidations.description.minLength}文字 ~ ${userValidations.description.maxLength}文字で入力してください`}
     />
+  }
+}
+
+export const userRoleErrorMessage = (error: FieldError) => {
+  switch (error.type) {
+    case "required": return <ErrorMessage message={"権限は必須です"}/>;
   }
 }
 

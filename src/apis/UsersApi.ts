@@ -52,6 +52,7 @@ export async function updateUser(updateUserData: User): Promise<void> {
       name: updateUserData.name,
       email: updateUserData.email,
       description: updateUserData.description,
+      role: updateUserData.role,
       avatarUri: updateUserData.avatarUri
     });
 
@@ -71,6 +72,7 @@ export async function addUser(addUserData: Omit<User, "id">): Promise<number> {
       name: addUserData.name,
       email: addUserData.email,
       description: addUserData.description,
+      role: addUserData.role,
       avatarUri: null
     });
 

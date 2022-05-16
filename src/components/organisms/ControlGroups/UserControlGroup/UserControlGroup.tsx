@@ -1,6 +1,7 @@
 /* --- フレームワーク、ライブラリー --------------------------------------------------------------------------------------- */
 import React, { memo, VFC } from "react";
-import { UnpackNestedValue, useForm } from "react-hook-form";
+import { UnpackNestedValue, useForm, Controller } from "react-hook-form";
+import Select from "react-select";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./UserControlGroup.module.scss";
@@ -10,13 +11,19 @@ import { InputField } from "../../../molecules/controls/InputField/InputField";
 
 /* --- バリデーション -------------------------------------------------------------------------------------------------- */
 import {
-  emailErrorMessage, userDescriptionErrorMessage,
+  emailErrorMessage,
+  userDescriptionErrorMessage,
   userNameErrorMessages,
+  userRoleErrorMessage,
   userValidations
 } from "../../../../config/validations/userValidations";
 
 /* --- 型定義 --------------------------------------------------------------------------------------------------------- */
-import { User, UserInputValues } from "../../../../type/User";
+import { User, USER_ROLE, UserInputValues, UserRole } from "../../../../type/User";
+import { SelectField } from "../../../../lib/ReactSelect";
+
+/* --- 補助関数 -------------------------------------------------------------------------------------------------------- */
+import { formatterStrings } from "../../../../config/formatterStrings";
 
 
 /* 更新の時だけユーザー情報がいる */
@@ -31,7 +38,31 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
 
   const { existingUserInfo, submitFunction, submitButtonName } = props;
 
-  const { register, handleSubmit, formState: { errors } } = useForm<UserInputValues>();
+  const defaultValues = {
+    name: existingUserInfo?.name,
+    email: existingUserInfo?.email,
+    description: existingUserInfo?.description,
+    role: existingUserInfo?.role,
+  }
+
+  const { register, handleSubmit, control, formState: { errors } } = useForm<UserInputValues>({ defaultValues });
+
+  /* --- セレクトフィールド --------------------------------------------------------------------------------------------- */
+  const roleOptions: SelectField.Option<UserRole>[] =
+    Object.values(USER_ROLE).map((value) => ({
+      label: formatterStrings.userRole(value),
+      value
+    }));
+
+  const getSelectDefaultValue = (): SelectField.Option<UserRole> | null => {
+    if (existingUserInfo) {
+      return {
+        label: formatterStrings.userRole(existingUserInfo.role),
+        value: existingUserInfo.role
+      }
+    }
+    return null;
+  }
 
   return (
     <form className={styles.userControlGroup} onSubmit={handleSubmit(submitFunction)}>
@@ -40,7 +71,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="text"
         label="ユーザー名"
         placeholder="ユーザー名を入力してください"
-        defaultValue={ existingUserInfo && existingUserInfo.name}
         required={userValidations.name.required}
         inputProps={register("name", {
           required: userValidations.name.required,
@@ -55,7 +85,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="email"
         label="メールアドレス"
         placeholder="メールアドレスを入力してください"
-        defaultValue={existingUserInfo && existingUserInfo.email}
         required={userValidations.email.required}
         inputProps={register("email", {
           required: userValidations.email.required,
@@ -69,7 +98,6 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         type="text"
         label="説明文"
         placeholder="説明文を入力してください"
-        defaultValue={existingUserInfo && existingUserInfo.description}
         required={userValidations.description.required}
         inputProps={register("description", {
           required: userValidations.description.required,
@@ -78,6 +106,24 @@ export const UserControlGroup: VFC<Props> = memo((props) => {
         })}
       />
       { errors.description && userDescriptionErrorMessage(errors.description) }
+
+      <Controller
+        control={control}
+        name="role"
+        rules={{ required: userValidations.role.required }}
+        render={({ field: { onChange, onBlur, ref } }) => (
+          <Select
+            placeholder="権限を選択"
+            defaultValue={getSelectDefaultValue()}
+            options={roleOptions}
+            onBlur={onBlur}
+            ref={ref}
+            onChange={(newSelect) => onChange(newSelect?.value)}
+          />
+        )}
+      />
+      { errors.role && userRoleErrorMessage(errors.role) }
+
       <button type="submit">{ submitButtonName }</button>
     </form>
   );

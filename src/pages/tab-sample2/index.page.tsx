@@ -89,6 +89,7 @@ const TabSample2: NextPage = () => {
     <div>
       <h1>タブapi実装のサンプルページ</h1>
       <Tabs
+        <UserRole>
         tabs={tabs}
         onClickTabFunction={onClickTab}
       />

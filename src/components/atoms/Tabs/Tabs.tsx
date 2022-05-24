@@ -1,5 +1,5 @@
 /* --- ライブラリー ---------------------------------------------------------------------------------------------------- */
-import React, { memo, useState, VFC } from "react";
+import React, { memo, useState } from "react";
 
 /* --- アセット ------------------------------------------------------------------------------------------------------- */
 import styles from "./Tabs.module.scss"
@@ -10,10 +10,10 @@ export type Tab<T = string> = {
   key: T;
 }
 
-type Props = {
-  tabs: Tab[];
+type Props<T = string> = {
+  tabs: Tab<T>[];
   disabled?: boolean;
-  onClickTabFunction: (tab: Tab<any>) => void;
+  onClickTabFunction: (tab: Tab<T>) => void;
 }
 
 const tabStyles = (isSelected: boolean): string => {
@@ -23,19 +23,19 @@ const tabStyles = (isSelected: boolean): string => {
   return "";
 }
 
-export const Tabs: VFC<Props> = memo((props) => {
+export const Tabs = memo(<TProps extends unknown>(props: Props<TProps>) => {
 
   const { tabs, onClickTabFunction } = props;
   const [ selectedTabIndex, setSelectedTabIndex ] = useState(0);
 
-  const onClickTab = (tab: Tab, indexInArray: number) => {
+  const onClickTab = (tab: Tab<TProps>, indexInArray: number) => {
     setSelectedTabIndex(indexInArray)
     onClickTabFunction(tab);
   }
 
   return (
     <ul className={styles.tabs} role="tablist">
-      {tabs.map((tab: Tab, index: number) => (
+      {tabs.map((tab: Tab<TProps>, index: number) => (
         <li
           className={`${styles.tab} ${tabStyles(index === selectedTabIndex)}`}
           role="tab"

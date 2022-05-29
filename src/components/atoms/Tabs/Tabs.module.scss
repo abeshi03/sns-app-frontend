@@ -1,0 +1,72 @@
+.tabs {
+
+  /* タブが選択activeの時の三角形 */
+  $ACTIVE_TAB_MARKS: (
+    width: 24px,
+    height: 18px
+  );
+
+  display: flex;
+  padding-bottom: map-get($ACTIVE_TAB_MARKS, "width");
+
+
+  .tab {
+
+    $BORDER_BOTTOM_WIDTH: 4px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 40px;
+    border-bottom: $BORDER_BOTTOM_WIDTH;
+    padding: 8px 10px;
+
+    text-align: center;
+
+    color: #516877;
+    border-bottom-style: solid;
+    border-bottom-color: #516877;
+    cursor: pointer;
+
+    position: relative;
+    flex: 1 1 0;
+
+    &:hover {
+      background: rgba(#516877, 0.5);
+      color: white;
+    }
+
+    &:focus {
+      outline: none;
+      text-decoration: underline;
+    }
+
+    &:active {
+      text-decoration: underline;
+      color: #516877;
+      background: white;
+    }
+
+    &__selected {
+      color: white;
+      background: #516877;
+      pointer-events: none;
+
+      &:after {
+
+        content: "";
+        display: block;
+
+        border-left: 0.5 * map-get($ACTIVE_TAB_MARKS, "width") solid transparent;
+        border-right: 0.5 * map-get($ACTIVE_TAB_MARKS, "width") solid transparent;
+        border-top: map-get($ACTIVE_TAB_MARKS, "height") solid #516877;
+
+        position: absolute;
+        left: 50%;
+        top: calc(100% - #{$BORDER_BOTTOM_WIDTH});
+        transform: translateX(-50%);
+      }
+    }
+  }
+}

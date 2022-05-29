@@ -23,8 +23,7 @@ const tabStyles = (isSelected: boolean): string => {
   return "";
 }
 
-export const Tabs = memo(<TProps extends unknown>(props: Props<TProps>) => {
-
+export function Tabs<TProps>(props: Props<TProps>): React.ReactElement {
   const { tabs, onClickTabFunction } = props;
   const [ selectedTabIndex, setSelectedTabIndex ] = useState(0);
 
@@ -48,4 +47,6 @@ export const Tabs = memo(<TProps extends unknown>(props: Props<TProps>) => {
       ))}
     </ul>
   );
-});
+}
+
+memo(Tabs);

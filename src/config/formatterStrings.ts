@@ -1,8 +1,9 @@
 /* --- 型定義 -------------------------------------------------------------------------------------------------------- */
 import { USER_ROLE, UserRole } from "../type/User";
 
-export const formatterStrings = {
-  userRole: function (role: UserRole) {
+class FormatterStrings {
+
+  public userRole(role: UserRole) {
     switch (role) {
       case USER_ROLE.normalUser:
         return "一般ユーザー";
@@ -10,4 +11,6 @@ export const formatterStrings = {
         return "管理者";
     }
   }
-};
+}
+
+export const formatterStrings = new FormatterStrings();
